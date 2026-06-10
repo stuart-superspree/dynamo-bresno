@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dynamo Bresno — Dalnic League Manager</title>
+<style>
+  :root{
+    --bg:#0a0e0a; --panel:#0f160f; --panel2:#121c12; --ink:#cae6b8;
+    --dim:#6f8a63; --amber:#e8b84b; --crimson:#d2455a; --navy:#3a6ea5;
+    --line:#1e2c1c; --green:#7ec96a; --white:#e9f3e2;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Courier New",ui-monospace,Menlo,Consolas,monospace;
+    font-size:14px;line-height:1.45;}
+  .wrap{max-width:960px;margin:0 auto;padding:16px 14px 70px;}
+  h1{font-size:20px;letter-spacing:2px;margin:0;color:var(--white);text-transform:uppercase}
+  .sub{color:var(--dim);font-size:12px;letter-spacing:1px;margin:2px 0 14px}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:14px;margin-bottom:14px}
+  .panel h2{font-size:12px;letter-spacing:2px;color:var(--amber);margin:0 0 12px;text-transform:uppercase;border-bottom:1px solid var(--line);padding-bottom:6px;display:flex;justify-content:space-between}
+  label{display:block;font-size:11px;letter-spacing:1px;color:var(--dim);text-transform:uppercase;margin-bottom:4px}
+  select,button{font-family:inherit;font-size:13px;background:var(--panel2);color:var(--ink);border:1px solid var(--line);border-radius:3px;padding:7px 9px}
+  select{width:100%}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .slider-row{margin-bottom:12px}
+  .slider-row .ends{display:flex;justify-content:space-between;font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:1px}
+  input[type=range]{width:100%;accent-color:var(--green)}
+  .val{color:var(--amber);font-weight:bold}
+  button.primary{background:var(--crimson);color:#fff;border-color:var(--crimson);font-weight:bold;letter-spacing:1px;cursor:pointer;padding:11px 16px;text-transform:uppercase}
+  button.primary:hover{filter:brightness(1.12)}
+  button.ghost{cursor:pointer}button.ghost:hover{border-color:var(--dim)}
+  table{width:100%;border-collapse:collapse;font-size:12.5px}
+  th,td{text-align:right;padding:4px 6px;border-bottom:1px solid var(--line)}
+  th{color:var(--dim);font-size:10px;letter-spacing:1px;text-transform:uppercase}
+  td.l,th.l{text-align:left}
+  tr.me td{color:var(--white);background:#13201a}
+  tr.cl td:first-child{box-shadow:inset 3px 0 0 var(--green)}
+  tr.el td:first-child{box-shadow:inset 3px 0 0 var(--navy)}
+  tr.rel td:first-child{box-shadow:inset 3px 0 0 var(--crimson)}
+  .pts{color:var(--amber);font-weight:bold}
+  .form span{display:inline-block;width:13px;text-align:center;font-weight:bold;border-radius:2px;margin-left:1px;font-size:10px}
+  .fW{color:var(--green)}.fD{color:var(--dim)}.fL{color:var(--crimson)}
+  .fixrow{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px dotted #142013;font-size:13px}
+  .fixrow .res{color:var(--amber);font-weight:bold;min-width:42px;text-align:center}
+  .me-fix{color:var(--white);font-weight:bold}
+  .scoreboard{display:flex;align-items:center;justify-content:center;gap:18px;background:#070b07;border:1px solid var(--line);border-radius:4px;padding:14px;margin-bottom:12px}
+  .scoreboard .team{font-size:15px;letter-spacing:1px;color:var(--white);text-align:center;width:42%}
+  .scoreboard .score{font-size:30px;color:var(--amber);font-weight:bold;letter-spacing:2px}
+  .clock{font-size:12px;color:var(--dim)}
+  .pill{display:inline-block;font-size:10px;letter-spacing:1px;color:var(--dim);border:1px solid var(--line);border-radius:10px;padding:1px 8px;margin-top:4px}
+  #feed{background:#070b07;border:1px solid var(--line);border-radius:4px;height:280px;overflow-y:auto;padding:10px 12px;font-size:13px}
+  #feed .ln{padding:2px 0;border-bottom:1px dotted #142013;white-space:pre-wrap}
+  #feed .min{color:var(--dim);display:inline-block;width:30px}
+  #feed .goal{color:var(--green);font-weight:bold}#feed .save{color:var(--navy)}
+  #feed .card{color:var(--crimson)}#feed .ko{color:var(--amber)}
+  .possbar{height:14px;background:var(--crimson);border:1px solid var(--line);border-radius:3px;overflow:hidden;display:flex;margin:8px 0 4px}
+  .possbar .home{background:var(--navy);height:100%}
+  .statline{display:flex;justify-content:space-between;font-size:12px;padding:3px 0;border-bottom:1px dotted #142013}
+  .statline .h{color:var(--navy)}.statline .a{color:var(--crimson)}.statline .lbl{color:var(--dim);text-transform:uppercase;font-size:10px;letter-spacing:1px}
+  .controls{display:flex;gap:8px;align-items:center;margin-bottom:10px;flex-wrap:wrap}
+  .hidden{display:none}
+  .foot{color:var(--dim);font-size:11px;text-align:center;margin-top:18px;letter-spacing:1px}
+  .key{color:var(--amber)}
+  .tag{font-size:10px;color:var(--dim);letter-spacing:1px}
+  .err{background:#2a0f12;border:1px solid var(--crimson);color:#ffb3bd;padding:12px;border-radius:4px}
+  .rating{color:var(--amber);font-weight:bold}
+  .twocol{display:grid;grid-template-columns:1.4fr 1fr;gap:14px}
+  @media(max-width:760px){.twocol{grid-template-columns:1fr}}
+  /* ---- landing ---- */
+  #landing{max-width:760px;margin:0 auto}
+  .landing-hero{position:relative;border:2px solid var(--line);border-radius:6px;overflow:hidden;
+    min-height:560px;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;
+    padding:24px 20px;text-align:center;
+    background:#0a0f0a url('images/landing-anton-varga.jpg') center 16%/cover no-repeat}
+  .landing-hero::before{content:"";position:absolute;inset:0;
+    background:linear-gradient(180deg,rgba(8,12,8,.05) 0%,rgba(8,12,8,.40) 46%,rgba(8,12,8,.93) 100%)}
+  .landing-hero>*{position:relative;z-index:1}
+  .landing-copy{background:rgba(9,14,9,.80);border:1px solid var(--line);border-radius:5px;
+    padding:15px 20px;margin:0 auto 14px;max-width:540px;text-align:left;line-height:1.6}
+  .landing-copy p{margin:0 0 9px}.landing-copy p:last-child{margin:0}
+  .landing-copy .lead{color:var(--white);font-size:15px;letter-spacing:.5px}
+  .landing-copy .ask{color:var(--amber);font-weight:bold;letter-spacing:.5px;font-size:15px}
+  /* ---- select team ---- */
+  .xirow{display:flex;align-items:center;gap:8px;padding:3px 0;border-bottom:1px dotted #142013}
+  .xirow .slot{display:inline-block;width:32px;color:var(--amber);font-size:11px;letter-spacing:1px;font-weight:bold;text-align:center}
+  .xirow select{flex:1;min-width:0;font-size:12px;padding:4px 6px}
+  .pitch{position:relative;width:100%;padding-top:120%;border:2px solid #cfeecb;border-radius:4px;overflow:hidden;
+    background:repeating-linear-gradient(90deg,#2c7a30 0 20px,#329136 20px 40px)}
+  .pitch .midl{position:absolute;left:0;right:0;top:50%;height:2px;background:rgba(207,238,203,.4)}
+  .pitch .cc{position:absolute;left:50%;top:50%;width:38px;height:38px;transform:translate(-50%,-50%);border:2px solid rgba(207,238,203,.35);border-radius:50%}
+  .pitch .pp{position:absolute;transform:translate(-50%,-50%);font-size:10px;color:#fff;background:rgba(8,20,8,.66);
+    border:1px solid rgba(207,238,203,.5);border-radius:3px;padding:1px 4px;white-space:nowrap;letter-spacing:.3px}
+  .pitch .pp .pn{color:var(--amber);font-weight:bold;margin-right:3px}
+  /* ---- season-end popup ---- */
+  .overlay{position:fixed;inset:0;background:rgba(4,7,4,.86);display:flex;align-items:center;justify-content:center;z-index:100;padding:20px}
+  .overlay.hidden{display:none}
+  .modal{background:var(--panel);border:2px solid var(--line);border-radius:8px;max-width:460px;width:100%;padding:26px 26px 22px;text-align:center;box-shadow:0 18px 60px rgba(0,0,0,.6)}
+  .modal-badge{font-size:38px;line-height:1;margin-bottom:8px}
+  .modal h2{font-size:18px;letter-spacing:2px;margin:0 0 8px;text-transform:uppercase}
+  .modal .pos{color:var(--white);font-size:12.5px;letter-spacing:1px;margin-bottom:12px}
+  .modal p{font-size:14px;line-height:1.65;color:var(--ink);margin:0 0 14px}
+  .modal-sign{font-size:13px;letter-spacing:1px;color:var(--dim);font-style:italic;margin-bottom:18px}
+  .modal.win h2{color:var(--amber)}.modal.eur h2{color:var(--green)}.modal.fail h2{color:var(--crimson)}
+  .modal.win{border-color:var(--amber)}.modal.eur{border-color:var(--green)}.modal.fail{border-color:var(--crimson)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Dynamo Bresno</h1>
+  <div class="sub">CAN YOU DO BETTER THAN ANTON VARGA? &middot; TAKE DYNAMO TO GLORY IN 2026/27</div>
+
+  <div id="loaderr"></div>
+
+  <!-- ===== LANDING ===== -->
+  <div id="landing">
+    <div class="landing-hero">
+    <div class="landing-copy">
+      <p class="lead">Welcome to our retro football management game.</p>
+      <p>Your goal is to lead Dynamo Bresno back into Europe this season. To qualify, you will need to win the league.</p>
+      <p class="ask">Can you perform better than Anton Varga?</p>
+      <p>Play the game and let's see&hellip;</p>
+    </div>
+    <button class="primary" id="btnStart">&#9654; Start your season</button>
+    </div>
+  </div>
+
+  <!-- ===== SEASON HUB ===== -->
+  <div id="hub" class="hidden">
+    <div class="twocol">
+      <div class="panel">
+        <h2>League Table <span class="tag" id="weekTag"></span></h2>
+        <table id="tableEl"><thead><tr>
+          <th class="l">#</th><th class="l">Club</th><th>P</th><th>W</th><th>D</th><th>L</th>
+          <th>GF</th><th>GA</th><th>GD</th><th>Pts</th><th class="l">Form</th>
+        </tr></thead><tbody></tbody></table>
+      </div>
+      <div>
+        <div class="panel">
+          <h2>Next Fixture</h2>
+          <div id="nextFix"></div>
+          <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+            <button class="primary" id="btnPlay">▶ Play Match</button>
+            <button class="ghost" id="btnQuick">⏩ Quick Result</button>
+          </div>
+        </div>
+        <div class="panel">
+          <h2>Top Scorers</h2>
+          <table id="scorersEl"><tbody></tbody></table>
+        </div>
+      </div>
+    </div>
+    <div class="panel">
+      <h2>This Round <span class="tag" id="roundTag"></span></h2>
+      <div id="roundFix"></div>
+    </div>
+    <div class="panel" id="lastResults" >
+      <h2>Last Round Results</h2>
+      <div id="lastFix"><span class="tag">Season just starting…</span></div>
+    </div>
+    <div class="panel" id="cupPanel">
+      <h2>Dalnic Cup <span class="tag" id="cupRoundTag"></span></h2>
+      <div id="cupBody"></div>
+      <button class="ghost" id="btnCup" style="margin-top:10px">▶ Play Cup Round</button>
+    </div>
+  </div>
+
+  <!-- ===== TACTICS ===== -->
+  <div id="tactics" class="hidden">
+    <div class="panel">
+      <h2>Team Talk &amp; Tactics</h2>
+      <div id="tacFix" style="margin-bottom:14px"></div>
+      <div class="grid2" style="margin-bottom:14px">
+        <div>
+          <label>Formation</label>
+          <select id="formation">
+            <option value="442">4-4-2 — Balanced</option>
+            <option value="433">4-3-3 — Front Three</option>
+            <option value="4231">4-2-3-1 — Modern</option>
+            <option value="352">3-5-2 — Wing-Backs</option>
+            <option value="451">4-5-1 — Containment</option>
+          </select>
+        </div>
+        <div>
+          <label>Team Talk</label>
+          <select id="mood">
+            <option value="0.85">Demand a win — pile on the pressure</option>
+            <option value="0.5">Fire them up</option>
+            <option value="0.3">Express belief in the squad</option>
+            <option value="0" selected>Calm &amp; focused</option>
+            <option value="0.2">Underdogs — play with freedom</option>
+            <option value="-0.3">Steady — protect the result</option>
+          </select>
+        </div>
+      </div>
+      <div class="grid2">
+        <div class="slider-row"><label>Mentality <span class="val" id="v-ment">Balanced</span></label>
+          <input type="range" id="s-ment" min="0" max="100" value="50">
+          <div class="ends"><span>Defensive</span><span>Attacking</span></div></div>
+        <div class="slider-row"><label>Tempo <span class="val" id="v-tempo">Standard</span></label>
+          <input type="range" id="s-tempo" min="0" max="100" value="50">
+          <div class="ends"><span>Patient</span><span>Fast</span></div></div>
+        <div class="slider-row"><label>Passing <span class="val" id="v-pass">Mixed</span></label>
+          <input type="range" id="s-pass" min="0" max="100" value="50">
+          <div class="ends"><span>Short</span><span>Direct</span></div></div>
+        <div class="slider-row"><label>Pressing <span class="val" id="v-press">Standard</span></label>
+          <input type="range" id="s-press" min="0" max="100" value="50">
+          <div class="ends"><span>Drop off</span><span>Press high</span></div></div>
+      </div>
+    </div>
+    <div class="panel">
+      <h2>Select Team <span class="tag">Suggested XI &middot; change any position</span></h2>
+      <div class="twocol">
+        <div id="xiList"></div>
+        <div>
+          <div class="pitch" id="pitch"><div class="midl"></div><div class="cc"></div></div>
+          <div class="tag" id="xiHint" style="margin-top:8px"></div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="primary" id="btnKick">▶ Kick Off</button>
+      <button class="ghost" id="btnBackHub">← Back</button>
+    </div>
+  </div>
+
+  <!-- ===== MATCH ===== -->
+  <div id="match" class="hidden">
+    <div class="scoreboard">
+      <div class="team"><span id="sbHome"></span><br><span class="pill" id="sbHomeStyle"></span></div>
+      <div><div class="score"><span id="scH">0</span> – <span id="scA">0</span></div>
+        <div class="clock" id="clock" style="text-align:center">0'</div></div>
+      <div class="team"><span id="sbAway"></span><br><span class="pill" id="sbAwayStyle"></span></div>
+    </div>
+    <div class="controls">
+      <button class="ghost" id="btnPause">⏸ Pause</button>
+      <label style="display:inline;margin:0 4px 0 8px">Speed</label>
+      <select id="speed" style="width:auto">
+        <option value="2800">Slow</option><option value="1800" selected>Normal</option>
+        <option value="1100">Fast</option><option value="1">Instant</option>
+      </select>
+      <button class="ghost" id="btnSkip">⏭ Skip to End</button>
+      <button class="ghost" id="btnSheets" style="margin-left:auto">▦ Team Sheets</button>
+    </div>
+    <div class="panel hidden" id="sheetPanel" style="margin-top:0"><h2>Starting Line-ups</h2><div id="teamsheets" class="grid2"></div></div>
+    <div id="feed"></div>
+    <div class="possbar"><div class="home" id="possHome" style="width:50%"></div></div>
+    <div class="statline"><span class="lbl">Possession</span><span><span class="h" id="stPossH">50%</span> &middot; <span class="a" id="stPossA">50%</span></span></div>
+    <div id="ftBox" class="hidden">
+      <div class="panel" style="margin-top:14px"><h2>Match Stats</h2><div id="statBox"></div></div>
+      <div class="panel"><h2>Player Ratings — Both Sides</h2><div id="ratingsBox" class="grid2"></div></div>
+      <div class="panel" id="leagueFeedPanel"><h2>League Feed</h2><div id="leagueFeed"></div></div>
+      <button class="primary" id="btnContinue">▶ Continue — Simulate Round</button>
+    </div>
+  </div>
+
+  <!-- ===== SEASON-END POPUP ===== -->
+  <div id="endOverlay" class="overlay hidden">
+    <div class="modal" id="endModal">
+      <div class="modal-badge" id="endBadge"></div>
+      <h2 id="endTitle"></h2>
+      <div class="pos" id="endPos"></div>
+      <p id="endMsg"></p>
+      <div class="modal-sign">&mdash; The Board</div>
+      <button class="primary" id="btnEndClose">Close</button>
+    </div>
+  </div>
+
+  <div class="foot">
+    All data fictional.
+  </div>
+</div>
+
+<!-- external moddable files -->
+<script src="dalnic-data.js"></script>
+<script src="dalnic-commentary.js"></script>
+<script>
+/* ===================================================================
+   DYNAMO BRESNO — DALNIC LEAGUE SEASON ENGINE (prototype v0.2)
+   =================================================================== */
+const $=id=>document.getElementById(id);
+
+if(typeof DALNIC==="undefined"||typeof COMMENTARY==="undefined"){
+  $("loaderr").innerHTML='<div class="err">Could not load <b>dalnic-data.js</b> and/or <b>dalnic-commentary.js</b>.<br>Keep all three files in the same folder and open this page directly from there.</div>';
+  throw new Error("data not loaded");
+}
+
+const CLUBS=DALNIC.clubs;
+const ME=CLUBS.findIndex(c=>c.name==="Dynamo Bresno");
+const clamp=(v,lo,hi)=>Math.max(lo,Math.min(hi,v));
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+
+/* ---- formations & XI selection ---- */
+const SHAPES={
+  "442":["GK","RB","CB","CB","LB","RW","CM","CM","LW","ST","ST"],
+  "433":["GK","RB","CB","CB","LB","DM","CM","CM","RW","ST","LW"],
+  "4231":["GK","RB","CB","CB","LB","DM","DM","RW","AM","LW","ST"],
+  "352":["GK","CB","CB","CB","RB","CM","CM","LB","AM","ST","ST"],
+  "451":["GK","RB","CB","CB","LB","RW","CM","DM","CM","LW","ST"]
+};
+const FALLBACK={DM:"CM",CM:"DM",AM:"CM",RW:"LW",LW:"RW",RB:"LB",LB:"RB",CB:"DM",ST:"AM"};
+function pickXI(squad,shape,out){
+  out=out||new Set();
+  const want=SHAPES[shape]||SHAPES["442"];
+  const used=new Set(),xi=[];
+  want.forEach(slot=>{
+    let c=squad.filter(p=>!used.has(p)&&!out.has(p.name)&&p.pos===slot);
+    if(!c.length&&FALLBACK[slot]) c=squad.filter(p=>!used.has(p)&&!out.has(p.name)&&p.pos===FALLBACK[slot]);
+    if(!c.length) c=squad.filter(p=>!used.has(p)&&!out.has(p.name)&&p.pos!=="GK");
+    if(!c.length) c=squad.filter(p=>!used.has(p)); // last resort: field the injured if desperate
+    c.sort((a,b)=>b.qual-a.qual);
+    const p=c[0]; if(p){used.add(p);xi.push(Object.assign({},p,{slot}));}
+  });
+  return xi;
+}
+function avg(arr,a){return arr.reduce((s,p)=>s+p.att[a],0)/arr.length;}
+function teamRatings(xi){
+  const def=xi.filter(p=>["CB","RB","LB"].includes(p.slot));
+  const mid=xi.filter(p=>["DM","CM","AM"].includes(p.slot));
+  const att=xi.filter(p=>["ST","RW","LW","AM"].includes(p.slot));
+  const gk=xi.find(p=>p.slot==="GK")||xi[0];
+  const d=def.length?def:xi, m=mid.length?mid:xi, a=att.length?att:xi;
+  return {
+    defence:(avg(d,"tackling")+avg(d,"heading")+avg(d,"strength"))/3,
+    midfield:(avg(m,"passing")+avg(m,"technique")+avg(m,"stamina"))/3,
+    attack:(avg(a,"finishing")+avg(a,"pace")+avg(a,"technique"))/3,
+    keeper:(gk.att.handling+gk.att.reflexes)/2 - 2.5, xi
+  };
+}
+/* AI tactics from club style */
+function aiTactics(club){
+  const s=club.style.toLowerCase();
+  let t={ment:50,tempo:50,pass:50,press:50};
+  if(/press|aggress/.test(s)){t.press=78;t.tempo=64;t.ment=58;}
+  if(/physical|military/.test(s)){t.pass=70;t.press=58;}
+  if(/powerhouse|new-money|giants/.test(s)){t.ment=60;t.tempo=56;}
+  if(/cup|grit|industrial/.test(s)){t.ment=42;t.press=46;}
+  return t;
+}
+function effRatings(R,T,isHome,mood){
+  const m=(T.ment-50)/50,tempo=(T.tempo-50)/50,direct=(T.pass-50)/50,press=(T.press-50)/50;
+  const hb=isHome?2.0:0, mo=mood||0;
+  return {attack:R.attack+hb+m*2.0,
+    midfield:R.midfield+hb*0.5+press*1.0-Math.abs(m)*0.3,
+    defence:R.defence+hb*0.5-m*1.5+(press<0?0.8:-0.4),
+    keeper:R.keeper,tempo,direct,press,xi:R.xi,
+    moraleAtt:mo*2.4, moraleDef:(mo<0?(-mo)*2.5:(-mo)*1.0)};
+}
+function teamScorer(xi){
+  const w=xi.filter(p=>p.slot!=="GK").map(p=>{
+    let f=p.att.finishing+(p.slot==="ST"?10:["RW","LW","AM"].includes(p.slot)?5:["CM","DM"].includes(p.slot)?1:0);
+    return {p,f:Math.max(1,f)};});
+  const tot=w.reduce((s,x)=>s+x.f,0);let r=Math.random()*tot;
+  for(const x of w){r-=x.f;if(r<=0)return x.p;}return w[0].p;
+}
+const fill=(t,c)=>t.replace(/<T>/g,c.T||"").replace(/<O>/g,c.O||"").replace(/<P>/g,c.P||"").replace(/<GK>/g,c.GK||"").replace(/<S>/g,c.S||"");
+
+/* ---- THE SIMULATION (symmetric) ---- */
+function simulate(homeClub,awayClub,o){
+  o=o||{};
+  const hShape=o.homeShape||"442", aShape=o.awayShape||"442";
+  const hXI=o.homeXI||pickXI(homeClub.squad,hShape,o.homeOut), aXI=o.awayXI||pickXI(awayClub.squad,aShape,o.awayOut);
+  const Hr=teamRatings(hXI), Ar=teamRatings(aXI);
+  const hT=o.homeTactics||aiTactics(homeClub), aT=o.awayTactics||aiTactics(awayClub);
+  const H=effRatings(Hr,hT,true,o.homeMood||0), A=effRatings(Ar,aT,false,o.awayMood||0);
+  const wantC=!!o.commentary;
+  const ev=[];
+  let scH=0,scA=0;
+  const stats={H:{sh:0,sot:0,cor:0,fk:0,foul:0,card:0,poss:0},A:{sh:0,sot:0,cor:0,fk:0,foul:0,card:0,poss:0}};
+  const goalsH=[],goalsA=[];        // scorer player objects
+  const ratings={H:{},A:{}};        // tracked for both sides when commentary on
+  if(wantC){hXI.forEach(p=>ratings.H[p.num]=6.6);aXI.forEach(p=>ratings.A[p.num]=6.6);}
+
+  const midSum=H.midfield+A.midfield;
+  let basePossH=clamp(H.midfield/midSum + (H.direct*-0.04), 0.30,0.72);
+  const avgTempo=(H.tempo+A.tempo)/2;
+  const pChance=0.27*(1+avgTempo*0.25);
+
+  function bump(sd,p,amt){if(wantC&&p&&p.num!=null)ratings[sd][p.num]=clamp((ratings[sd][p.num]||6.6)+amt,3,10);}
+  function score(){return scH+"-"+scA;}
+  function pushEv(min,type,ctx,cls){ if(!wantC)return; ev.push({min,text:fill(pick(COMMENTARY[type]),ctx),cls:cls||""}); }
+
+  function resolveChance(isHome,min){
+    const side=isHome?"H":"A";stats[side].sh++;
+    const xi=isHome?H.xi:A.xi;
+    const shooter=teamScorer(xi);
+    const shTeam=(isHome?homeClub:awayClub).name;
+    const finishing=clamp(shooter.att.finishing+(isHome?H.moraleAtt:A.moraleAtt)-(isHome?A.moraleDef:H.moraleDef),2,22);
+    const chanceQual=6+Math.random()*9+((isHome?H.direct:A.direct)>0?1:0);
+    const keep=(isHome?A:H).keeper;
+    const onTarget=Math.random()<clamp(0.31+finishing*0.010,0.28,0.64);
+    if(!onTarget){pushEv(min,"chance_off",{T:shTeam,P:shooter.name});bump(side,shooter,0.05);return;}
+    stats[side].sot++;
+    const goalProb=clamp(0.24+(finishing-keep)*0.030+(chanceQual-7)*0.013,0.06,0.64);
+    if(Math.random()<goalProb){
+      if(isHome){scH++;goalsH.push(shooter);}else{scA++;goalsA.push(shooter);}
+      let gtype="goal";
+      if(shooter.slot==="CB"||(shooter.att.heading>15&&Math.random()<0.3))gtype="goal_header";
+      else if(Math.random()<0.12)gtype="goal_screamer";
+      if(!COMMENTARY[gtype])gtype="goal";
+      pushEv(min,gtype,{T:shTeam,P:shooter.name,S:score()},"goal");
+      bump(side,shooter,1.1);
+    } else {
+      if(Math.random()<0.3){pushEv(min,"chance_block",{T:shTeam,P:shooter.name});}
+      else {const gkSide=isHome?"A":"H";const gkObj=(isHome?A:H).xi.find(p=>p.slot==="GK");
+        pushEv(min,"chance_save",{T:shTeam,P:shooter.name,GK:gkObj?gkObj.name:"the 'keeper"},"save");
+        bump(gkSide,gkObj,0.25);}
+      bump(side,shooter,0.12);
+    }
+  }
+  function tryChance(min){
+    if(Math.random()>pChance)return;
+    const hThreat=H.attack/(H.attack+A.defence), aThreat=A.attack/(A.attack+H.defence);
+    const wH=basePossH*hThreat, wA=(1-basePossH)*aThreat;
+    resolveChance(Math.random()<wH/(wH+wA),min);
+  }
+
+  pushEv(0,"kickoff",{T:homeClub.name},"ko");
+  for(let m=1;m<=90;m++){
+    if(m===45)pushEv(45,"half",{},"ko");
+    if(wantC&&Math.random()<0.10){
+      const hp=Math.random()<basePossH;const xi=hp?H.xi:A.xi;
+      const t=(hp?homeClub:awayClub).name, ply=teamScorer(xi).name;
+      pushEv(m,((hp?H:A).press>0.3&&Math.random()<0.4)?"press":"possession",{T:t,P:ply});
+    }
+    if(Math.random()<0.05){const hp=Math.random()<basePossH;stats[hp?"H":"A"].cor++;
+      pushEv(m,"corner",{T:(hp?homeClub:awayClub).name,P:teamScorer(hp?H.xi:A.xi).name});}
+    if(Math.random()<0.05){const hp=Math.random()<0.5;stats[hp?"H":"A"].fk++;
+      pushEv(m,"freekick",{T:(hp?homeClub:awayClub).name,P:teamScorer(hp?H.xi:A.xi).name});}
+    const foulP=0.05+Math.max(0,(H.press+A.press)/2)*0.04;
+    if(Math.random()<foulP){const hp=Math.random()<0.5;const s=hp?"H":"A";stats[s].foul++;
+      const t=(hp?homeClub:awayClub).name, p=teamScorer(hp?H.xi:A.xi);
+      pushEv(m,"foul",{T:t,P:p.name});
+      if(Math.random()<0.16){stats[s].card++;pushEv(m,"card",{T:t,P:p.name},"card");bump(s,p,-0.3);}
+    }
+    tryChance(m);
+  }
+  pushEv(90,"fulltime",{S:score()},"ko");
+  stats.H.poss=Math.round(basePossH*100);stats.A.poss=100-stats.H.poss;
+  return {ev,scH,scA,stats,goalsH,goalsA,ratings,hXI,aXI};
+}
+
+/* =====================  SEASON STATE  ===================== */
+let season;
+function makeFixtures(n){
+  const idx=[...Array(n).keys()];let arr=idx.slice();const rounds=[];
+  for(let r=0;r<n-1;r++){
+    const round=[];
+    for(let i=0;i<n/2;i++){let h=arr[i],a=arr[n-1-i];round.push(r%2===0?[h,a]:[a,h]);}
+    rounds.push(round);
+    arr=[arr[0],arr[n-1],...arr.slice(1,n-1)];
+  }
+  const second=rounds.map(rd=>rd.map(([h,a])=>[a,h]));
+  return rounds.concat(second);
+}
+function newSeason(){
+  const n=CLUBS.length;
+  season={
+    n, round:0, fixtures:makeFixtures(n),
+    table:CLUBS.map((c,i)=>({i,p:0,w:0,d:0,l:0,gf:0,ga:0,pts:0,form:[]})),
+    scorers:{}, lastRound:null,
+    goalLog:{}, injuries:{}, ratingLog:{}
+  };
+  prepareRound();
+  initCup();
+}
+function recordResult(hi,ai,hg,ag,goalsH,goalsA){
+  const T=season.table;const H=T[hi],A=T[ai];
+  H.p++;A.p++;H.gf+=hg;H.ga+=ag;A.gf+=ag;A.ga+=hg;
+  if(hg>ag){H.w++;A.l++;H.pts+=3;H.form.push("W");A.form.push("L");}
+  else if(hg<ag){A.w++;H.l++;A.pts+=3;A.form.push("W");H.form.push("L");}
+  else {H.d++;A.d++;H.pts++;A.pts++;H.form.push("D");A.form.push("D");}
+  (goalsH||[]).forEach(p=>addScorer(p,hi));(goalsA||[]).forEach(p=>addScorer(p,ai));
+  logGoals(hi,goalsH||[],season.round);logGoals(ai,goalsA||[],season.round);
+}
+/* ---- injuries, form & news data ---- */
+function injKey(ci,name){return ci+"|"+name;}
+function injuredNames(ci){const s=new Set();
+  CLUBS[ci].squad.forEach(p=>{if((season.injuries[injKey(ci,p.name)]||0)>0)s.add(p.name);});return s;}
+function prepareRound(){
+  for(const k in season.injuries){if(--season.injuries[k]<=0)delete season.injuries[k];}
+  if(season.round>=season.fixtures.length)return;
+  CLUBS.forEach((c,ci)=>{
+    const out=injuredNames(ci);
+    if(Math.random()<0.30){
+      const fit=c.squad.filter(p=>!out.has(p.name));
+      if(fit.length>13){
+        const victim=fit.slice(0,15)[Math.floor(Math.random()*Math.min(15,fit.length))];
+        season.injuries[injKey(ci,victim.name)]=1+Math.floor(Math.random()*4);
+      }
+    }
+  });
+}
+function logGoals(ci,scorers,round){
+  scorers.forEach(p=>{const k=ci+"|"+p.name;
+    if(!season.goalLog[k])season.goalLog[k]=[];
+    let e=season.goalLog[k].find(x=>x.r===round);
+    if(!e){e={r:round,g:0};season.goalLog[k].push(e);}
+    e.g++;});
+}
+function recentGoals(ci,name,lastN){
+  const log=season.goalLog[ci+"|"+name]||[];const cutoff=season.round-lastN;
+  return log.filter(x=>x.r>=cutoff).reduce((s,x)=>s+x.g,0);
+}
+function seasonGoals(ci,name){const k=name+"|"+ci;return season.scorers[k]?season.scorers[k].goals:0;}
+function teamNews(ci){
+  const c=CLUBS[ci];const out=injuredNames(ci);const items=[];
+  [...out].forEach(n=>{const w=season.injuries[injKey(ci,n)];
+    items.push({c:"inj",t:`<b>${n}</b> ruled out (${w} wk${w>1?"s":""}).`});});
+  if(out.size){
+    const dep=pickXI(c.squad,"442",out).filter(p=>p.qual<=11).sort((a,b)=>a.qual-b.qual)[0];
+    if(dep)items.push({c:"debut",t:`<b>${dep.name}</b> handed a rare start in the depleted side.`});
+  }
+  c.squad.filter(p=>!out.has(p.name)).forEach(p=>{const g5=recentGoals(ci,p.name,5);
+    if(g5>=3)items.push({c:"hot",t:`<b>${p.name}</b> in red-hot form — ${g5} in his last 5.`});});
+  const top=Object.values(season.scorers).sort((a,b)=>b.goals-a.goals)[0];
+  if(top&&top.club===c.abbr&&top.goals>=4)items.push({c:"top",t:`<b>${top.name}</b> tops the Dalnic scoring charts (${top.goals}).`});
+  if(!items.length)items.push({c:"none",t:"Clean bill of health — a settled side."});
+  return items.slice(0,5);
+}
+function addScorer(p,clubIdx){
+  const k=p.name+"|"+clubIdx;
+  if(!season.scorers[k])season.scorers[k]={name:p.name,club:CLUBS[clubIdx].abbr,goals:0};
+  season.scorers[k].goals++;
+}
+function standings(){
+  return season.table.slice().sort((a,b)=>
+    b.pts-a.pts || (b.gf-b.ga)-(a.gf-a.ga) || b.gf-a.gf || CLUBS[a.i].name.localeCompare(CLUBS[b.i].name));
+}
+function myFixtureThisRound(){
+  const rd=season.fixtures[season.round];
+  return rd.find(([h,a])=>h===ME||a===ME);
+}
+
+/* simulate all non-Dynamo fixtures of current round */
+function simRound(skipFix){
+  const rd=season.fixtures[season.round];const results=[];
+  rd.forEach(fx=>{
+    const [h,a]=fx;
+    if(skipFix&&fx===skipFix){return;} // already played interactively
+    const r=simulate(CLUBS[h],CLUBS[a],{commentary:false,homeOut:injuredNames(h),awayOut:injuredNames(a)});
+    recordResult(h,a,r.scH,r.scA,r.goalsH,r.goalsA);
+    results.push({h,a,hg:r.scH,ag:r.scA});
+  });
+  return results;
+}
+
+/* =====================  UI: HUB  ===================== */
+function show(view){["landing","hub","tactics","match"].forEach(v=>$(v).classList.add("hidden"));$(view).classList.remove("hidden");window.scrollTo(0,0);}
+function formHTML(form){return '<span class="form">'+form.slice(-5).map(f=>'<span class="f'+f+'">'+f+'</span>').join("")+'</span>';}
+
+function renderHub(){
+  $("weekTag").textContent="Round "+(season.round+1)+" / "+season.fixtures.length;
+  // table
+  const st=standings();const tb=$("tableEl").querySelector("tbody");tb.innerHTML="";
+  st.forEach((row,pos)=>{
+    const c=CLUBS[row.i];const tr=document.createElement("tr");
+    let cls=row.i===ME?"me ":"";
+    if(pos===0)cls+="cl";else if(pos===1)cls+="el";else if(pos>=season.n-2)cls+="rel";
+    tr.className=cls;
+    tr.innerHTML=`<td class="l">${pos+1}</td><td class="l">${c.name}</td><td>${row.p}</td>
+      <td>${row.w}</td><td>${row.d}</td><td>${row.l}</td><td>${row.gf}</td><td>${row.ga}</td>
+      <td>${(row.gf-row.ga>0?'+':'')+(row.gf-row.ga)}</td><td class="pts">${row.pts}</td>
+      <td class="l">${formHTML(row.form)}</td>`;
+    tb.appendChild(tr);
+  });
+  // top scorers
+  const sc=Object.values(season.scorers).sort((a,b)=>b.goals-a.goals).slice(0,8);
+  $("scorersEl").querySelector("tbody").innerHTML = sc.length?sc.map(s=>
+    `<tr><td class="l">${s.name}</td><td class="l tag">${s.club}</td><td class="pts">${s.goals}</td></tr>`).join("")
+    :'<tr><td class="tag">No goals yet</td></tr>';
+  // next fixture
+  if(season.round<season.fixtures.length){
+    const [h,a]=myFixtureThisRound();const home=h===ME;const opp=CLUBS[home?a:h];
+    $("nextFix").innerHTML=`<div style="font-size:15px;color:var(--white)">${CLUBS[ME].name} ${home?'(H)':'(A)'} v ${opp.name}</div>
+      <div class="tag" style="margin-top:4px">${opp.style} &middot; squad strength ${opp.str}</div>`;
+    // round fixtures
+    $("roundTag").textContent="Round "+(season.round+1);
+    $("roundFix").innerHTML=season.fixtures[season.round].map(([hh,aa])=>{
+      const me=hh===ME||aa===ME;
+      return `<div class="fixrow"><span class="${me?'me-fix':''}">${CLUBS[hh].name}</span><span class="res tag">v</span><span class="${me?'me-fix':''}" style="text-align:right">${CLUBS[aa].name}</span></div>`;
+    }).join("");
+    $("btnPlay").disabled=false;$("btnQuick").disabled=false;
+  } else {
+    const champ=standings()[0];
+    $("nextFix").innerHTML=`<div style="font-size:16px;color:var(--amber)">SEASON COMPLETE</div>
+      <div style="margin-top:6px">Champions: <b style="color:var(--white)">${CLUBS[champ.i].name}</b></div>
+      <div class="tag" style="margin-top:6px">Dynamo finished ${ordinal(standings().findIndex(r=>r.i===ME)+1)}.</div>`;
+    $("roundFix").innerHTML="";$("roundTag").textContent="";
+    $("btnPlay").disabled=true;$("btnQuick").disabled=true;
+    $("btnPlay").textContent="Season over";
+  }
+  // last round
+  if(season.lastRound){
+    $("lastFix").innerHTML=season.lastRound.map(r=>{
+      const me=r.h===ME||r.a===ME;
+      return `<div class="fixrow"><span class="${me?'me-fix':''}">${CLUBS[r.h].name}</span><span class="res">${r.hg}–${r.ag}</span><span class="${me?'me-fix':''}" style="text-align:right">${CLUBS[r.a].name}</span></div>`;
+    }).join("");
+  }
+  renderCup();
+}
+function ordinal(n){const s=["th","st","nd","rd"],v=n%100;return n+(s[(v-20)%10]||s[v]||s[0]);}
+
+/* =====================  UI: TACTICS  ===================== */
+const sliderLabels={
+  "s-ment":["v-ment",v=>v<25?"Very Defensive":v<45?"Cautious":v<=55?"Balanced":v<75?"Attacking":"All-Out Attack"],
+  "s-tempo":["v-tempo",v=>v<30?"Slow":v<=60?"Standard":v<80?"Quick":"Frantic"],
+  "s-pass":["v-pass",v=>v<30?"Short":v<=60?"Mixed":v<80?"Direct":"Long Ball"],
+  "s-press":["v-press",v=>v<30?"Drop Off":v<=60?"Standard":v<80?"High Press":"Gegenpress"]
+};
+Object.keys(sliderLabels).forEach(id=>{const[lbl,fn]=sliderLabels[id];
+  $(id).addEventListener("input",e=>$(lbl).textContent=fn(+e.target.value));});
+
+function newsHTML(ci){
+  const icon={inj:"⚕",debut:"➤",hot:"▲",top:"★",none:"·"};
+  const col={inj:"var(--crimson)",debut:"var(--navy)",hot:"var(--green)",top:"var(--amber)",none:"var(--dim)"};
+  return teamNews(ci).map(n=>`<div style="padding:3px 0;font-size:12.5px"><span style="color:${col[n.c]};font-weight:bold;display:inline-block;width:16px">${icon[n.c]}</span>${n.t}</div>`).join("");
+}
+function openTactics(){
+  const [h,a]=myFixtureThisRound();const home=h===ME;const opp=CLUBS[home?a:h];
+  $("tacFix").innerHTML=`<div style="font-size:15px;color:var(--white)">${CLUBS[ME].name} ${home?'(H)':'(A)'} v ${opp.name}</div>
+    <div class="tag" style="margin-top:4px;margin-bottom:10px">${opp.style} &middot; they tend to ${describeAI(opp)}</div>
+    <div class="grid2">
+      <div><div class="tag" style="color:var(--white);margin-bottom:4px">DYNAMO TEAM NEWS</div>${newsHTML(ME)}</div>
+      <div><div class="tag" style="color:var(--white);margin-bottom:4px">${opp.name.toUpperCase()} TEAM NEWS</div>${newsHTML(home?a:h)}</div>
+    </div>`;
+  suggestXI();renderSelectTeam();
+  show("tactics");
+}
+function describeAI(club){const t=aiTactics(club);
+  if(t.press>=70)return "press high and hunt the ball";
+  if(t.pass>=66)return "go direct and physical";
+  if(t.ment>=58)return "commit men forward";
+  if(t.ment<=44)return "sit in and stay compact";
+  return "play a balanced game";
+}
+function getTactics(){return{ment:+$("s-ment").value,tempo:+$("s-tempo").value,pass:+$("s-pass").value,press:+$("s-press").value};}
+
+/* ---- matchday team selection (Dynamo) ---- */
+let myXI=[];
+function dynamoAvailable(){const out=injuredNames(ME);return CLUBS[ME].squad.filter(p=>!out.has(p.name));}
+function suggestXI(){myXI=pickXI(CLUBS[ME].squad,$("formation").value,injuredNames(ME));}
+const PITCH_ROWS={GK:96,CB:74,RB:74,LB:74,DM:58,CM:50,AM:36,RW:32,LW:32,ST:18};
+function renderSelectTeam(){
+  if(!myXI.length)suggestXI();
+  const avail=dynamoAvailable();
+  $("xiList").innerHTML=myXI.map((p,i)=>{
+    const used=new Set(myXI.filter((_,j)=>j!==i).map(q=>q.name));
+    const opts=avail.filter(q=>q.name===p.name||!used.has(q.name))
+      .sort((a,b)=>((b.pos===p.slot)-(a.pos===p.slot))||(b.qual-a.qual))
+      .map(q=>`<option value="${q.name}"${q.name===p.name?' selected':''}>${q.name} (${q.pos} ${q.qual})</option>`).join("");
+    return `<div class="xirow"><span class="slot">${p.slot}</span><select data-i="${i}">${opts}</select></div>`;
+  }).join("");
+  $("xiList").querySelectorAll("select").forEach(sel=>sel.addEventListener("change",e=>{
+    const i=+e.target.dataset.i, np=CLUBS[ME].squad.find(q=>q.name===e.target.value);
+    if(np)myXI[i]=Object.assign({},np,{slot:myXI[i].slot});
+    renderSelectTeam();
+  }));
+  renderPitch();
+  $("xiHint").textContent="Average rating "+(myXI.reduce((s,p)=>s+p.qual,0)/myXI.length).toFixed(1)+" · injured players unavailable.";
+}
+function renderPitch(){
+  const pitch=$("pitch");if(!pitch)return;
+  pitch.querySelectorAll(".pp").forEach(n=>n.remove());
+  const bands={};
+  myXI.forEach(p=>{const y=PITCH_ROWS[p.slot]||50;(bands[y]=bands[y]||[]).push(p);});
+  Object.keys(bands).forEach(y=>{
+    const row=bands[y],n=row.length;
+    row.forEach((p,k)=>{
+      const el=document.createElement("div");el.className="pp";
+      el.style.left=(100/(n+1))*(k+1)+"%";el.style.top=y+"%";
+      el.innerHTML='<span class="pn">'+p.num+'</span>'+p.name.split(" ").pop();
+      pitch.appendChild(el);
+    });
+  });
+}
+
+/* =====================  UI: MATCH  ===================== */
+let playback=null,paused=false,curResult=null,curFix=null;
+function playMatch(){
+  const fx=myFixtureThisRound();curFix=fx;
+  const [h,a]=fx;const homeClub=CLUBS[h],awayClub=CLUBS[a];
+  const meHome=h===ME;
+  const tactics=getTactics(),mood=+$("mood").value,shape=$("formation").value;
+  const opts={commentary:true,homeOut:injuredNames(h),awayOut:injuredNames(a)};
+  if(!myXI||myXI.length!==11)suggestXI();
+  if(meHome){opts.homeXI=myXI;opts.homeTactics=tactics;opts.homeShape=shape;opts.homeMood=mood;}
+  else{opts.awayXI=myXI;opts.awayTactics=tactics;opts.awayShape=shape;opts.awayMood=mood;}
+  curResult=simulate(homeClub,awayClub,opts);
+  // team sheets
+  $("teamsheets").innerHTML=tsTable(h,curResult.hXI,homeClub.name+" (H)")+tsTable(a,curResult.aXI,awayClub.name+" (A)");
+  $("sheetPanel").classList.add("hidden");
+  // scoreboard
+  $("sbHome").textContent=homeClub.name;$("sbAway").textContent=awayClub.name;
+  $("sbHomeStyle").textContent=h===ME?"DYNAMO":homeClub.style.toUpperCase();
+  $("sbAwayStyle").textContent=a===ME?"DYNAMO":awayClub.style.toUpperCase();
+  $("scH").textContent="0";$("scA").textContent="0";$("feed").innerHTML="";
+  $("ftBox").classList.add("hidden");$("ratingsBox").innerHTML="";$("statBox").innerHTML="";
+  show("match");
+  let i=0,sH=0,sA=0;paused=false;$("btnPause").textContent="⏸ Pause";
+  const feed=$("feed");const ev=curResult.ev;
+  function step(){
+    if(i>=ev.length){finishMatch();return;}
+    const e=ev[i++];
+    if(e.cls==="goal"){/* infer side from text containing team name */}
+    // recompute running score from events: count goals up to i
+    // simpler: detect by checking score token — instead track via stats below
+    $("clock").textContent=e.min+"'";
+    const div=document.createElement("div");div.className="ln";
+    div.innerHTML='<span class="min">'+e.min+"'</span> <span class=\""+e.cls+"\">"+e.text+"</span>";
+    feed.appendChild(div);feed.scrollTop=feed.scrollHeight;
+    if(e.cls==="goal"){updateRunningScore();}
+    const ph=curResult.stats.H.poss;$("possHome").style.width=ph+"%";
+    $("stPossH").textContent=ph+"%";$("stPossA").textContent=(100-ph)+"%";
+    if(!paused){const sp=+$("speed").value;playback=setTimeout(step,e.cls==="goal"?sp*2.2:sp);}
+  }
+  let goalsSeen=0;
+  function updateRunningScore(){
+    goalsSeen++;
+    // derive home/away goals progressively by parsing scoreline token "x-y" in last goal text
+    const m=feed.lastChild.textContent.match(/(\d+)-(\d+)/);
+    if(m){$("scH").textContent=m[1];$("scA").textContent=m[2];}
+  }
+  $("btnPause").onclick=()=>{paused=!paused;$("btnPause").textContent=paused?"▶ Resume":"⏸ Pause";if(!paused)step();};
+  $("btnSkip").onclick=()=>{paused=true;clearTimeout(playback);
+    // dump remaining events instantly
+    while(i<ev.length){const e=ev[i++];const div=document.createElement("div");div.className="ln";
+      div.innerHTML='<span class="min">'+e.min+"'</span> <span class=\""+e.cls+"\">"+e.text+"</span>";feed.appendChild(div);
+      if(e.cls==="goal"){const m=e.text.match(/(\d+)-(\d+)/);if(m){$("scH").textContent=m[1];$("scA").textContent=m[2];}}}
+    feed.scrollTop=feed.scrollHeight;finishMatch();};
+  step();
+}
+function tsTable(ci,xi,label){
+  const rows=xi.map(p=>{const g=seasonGoals(ci,p.name);const g5=recentGoals(ci,p.name,5);
+    return `<div style="display:flex;justify-content:space-between;padding:2px 0;border-bottom:1px dotted #142013;font-size:12.5px">
+      <span><span class="tag" style="display:inline-block;width:24px">${p.num}</span><span class="tag" style="display:inline-block;width:30px">${p.slot}</span>${p.name}${g5>=3?' <span style="color:var(--green)">▲</span>':''}</span>
+      <span class="pts">${g?g+'⚽':''}</span></div>`;}).join("");
+  return `<div><div class="tag" style="color:var(--white);margin-bottom:4px">${label}</div>${rows}</div>`;
+}
+function ratingsTable(ci,xi,rt,goals,label){
+  const me=ci===ME;
+  const rows=xi.map(p=>{const g=goals.filter(x=>x.num===p.num&&x.name===p.name).length;
+    return `<tr><td class="l">${p.num}</td><td class="l">${p.name}</td><td class="l">${p.slot}</td><td class="rating">${(rt[p.num]||6.6).toFixed(1)}</td><td>${g||''}</td></tr>`;}).join("");
+  return `<div><div class="tag" style="color:${me?'var(--white)':'var(--dim)'};margin-bottom:4px">${label}${me?' — DYNAMO':''}</div>
+    <table><thead><tr><th class="l">#</th><th class="l">Player</th><th class="l">Pos</th><th>Rt</th><th>G</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+}
+function leagueFeedHTML(){
+  const prov={};
+  Object.values(season.scorers).forEach(x=>{prov[x.name+"|"+x.club]={name:x.name,club:x.club,goals:x.goals};});
+  const add=(ci,arr)=>arr.forEach(p=>{const club=CLUBS[ci].abbr,k=p.name+"|"+club;
+    if(!prov[k])prov[k]={name:p.name,club,goals:0};prov[k].goals++;});
+  add(curFix[0],curResult.goalsH);add(curFix[1],curResult.goalsA);
+  const ranked=Object.values(prov).sort((a,b)=>b.goals-a.goals);
+  const meHome=curFix[0]===ME, myGoals=meHome?curResult.goalsH:curResult.goalsA;
+  const lines=[],seen={};
+  myGoals.forEach(p=>{if(seen[p.name])return;seen[p.name]=1;
+    const k=p.name+"|"+CLUBS[ME].abbr, tally=prov[k].goals;
+    const rank=ranked.findIndex(x=>x.name===p.name&&x.club===CLUBS[ME].abbr)+1;
+    const inM=myGoals.filter(x=>x.name===p.name).length;
+    lines.push(`<div style="padding:3px 0;font-size:12.5px">⚽ <b>${p.name}</b>${inM>1?' ('+inM+')':''} — now <b>${tally}</b> for the season, ${ordinal(rank)} in the scoring race.</div>`);});
+  if(!myGoals.length)lines.push('<div class="tag" style="padding:3px 0">No Dynamo scorers today.</div>');
+  const top=ranked[0];
+  if(top)lines.push(`<div style="padding:4px 0 0;font-size:12px" class="tag">Golden Boot lead: <span style="color:var(--amber)">${top.name} (${top.club}) — ${top.goals}</span></div>`);
+  return lines.join("");
+}
+function finishMatch(){
+  clearTimeout(playback);$("clock").textContent="FT";
+  $("scH").textContent=curResult.scH;$("scA").textContent=curResult.scA;
+  const s=curResult.stats;
+  const rows=[["Shots",s.H.sh,s.A.sh],["On Target",s.H.sot,s.A.sot],["Possession",s.H.poss+"%",s.A.poss+"%"],
+    ["Corners",s.H.cor,s.A.cor],["Fouls",s.H.foul,s.A.foul],["Bookings",s.H.card,s.A.card]];
+  $("statBox").innerHTML=rows.map(r=>`<div class="statline"><span class="h">${r[1]}</span><span class="lbl">${r[0]}</span><span class="a">${r[2]}</span></div>`).join("");
+  const h=curFix[0],a=curFix[1];
+  $("ratingsBox").innerHTML=
+    ratingsTable(h,curResult.hXI,curResult.ratings.H,curResult.goalsH,CLUBS[h].name)+
+    ratingsTable(a,curResult.aXI,curResult.ratings.A,curResult.goalsA,CLUBS[a].name);
+  $("leagueFeed").innerHTML=leagueFeedHTML();
+  $("ftBox").classList.remove("hidden");
+}
+
+function continueAfterMatch(){
+  // record Dynamo result + sim rest of round
+  recordResult(curFix[0],curFix[1],curResult.scH,curResult.scA,curResult.goalsH,curResult.goalsA);
+  const others=simRound(curFix);
+  const myRes={h:curFix[0],a:curFix[1],hg:curResult.scH,ag:curResult.scA};
+  season.lastRound=[myRes,...others];
+  season.round++;prepareRound();
+  renderHub();show("hub");checkSeasonEnd();
+}
+
+/* quick result: sim Dynamo match with chosen-or-default tactics, no watching */
+function quickResult(){
+  const fx=myFixtureThisRound();const [h,a]=fx;const meHome=h===ME;
+  const opts={commentary:false,homeOut:injuredNames(h),awayOut:injuredNames(a)};
+  const tactics={ment:55,tempo:50,pass:50,press:55}; // sensible default
+  if(meHome){opts.homeTactics=tactics;}else{opts.awayTactics=tactics;}
+  const r=simulate(CLUBS[h],CLUBS[a],opts);
+  recordResult(h,a,r.scH,r.scA,r.goalsH,r.goalsA);
+  const others=simRound(fx);
+  season.lastRound=[{h,a,hg:r.scH,ag:r.scA},...others];
+  season.round++;prepareRound();renderHub();show("hub");checkSeasonEnd();
+}
+
+/* =====================  SEASON END (Board verdict)  ===================== */
+function checkSeasonEnd(){
+  if(season.ended)return;
+  if(season.round>=season.fixtures.length){season.ended=true;showSeasonEnd();}
+}
+function showSeasonEnd(){
+  const pos=standings().findIndex(r=>r.i===ME)+1;
+  const m=$("endModal");m.classList.remove("win","eur","fail");
+  let badge,title,msg,cls;
+  if(pos===1){cls="win";badge="🏆";title="Champions!";msg="You won the league and qualified for the Champions League as expected. Well done.";}
+  else if(pos===2){cls="eur";badge="🥈";title="Runners-up";msg="Not bad. You qualified for the Europa League. Acceptable.";}
+  else{cls="fail";badge="🚫";title="The season is a failure";msg="As are you. European football qualification not achieved. You are sacked.";}
+  m.classList.add(cls);
+  $("endBadge").textContent=badge;
+  $("endTitle").textContent=title;
+  $("endPos").textContent="Dynamo Bresno finished "+ordinal(pos)+" in the Dalnic Premier League.";
+  $("endMsg").textContent=msg;
+  $("endOverlay").classList.remove("hidden");
+}
+
+/* =====================  DALNIC CUP (knockout, runs alongside league)  ===================== */
+let cup=null;
+const CUP_ROUND_NAMES=["First Round","Second Round","Third Round","Quarter-Final","Semi-Final","Final"];
+const CUP_UNLOCK=[2,5,8,11,14,17]; // league rounds that must be played before each cup round opens
+const CUP_TOWNS=["Brest","Volk","Stara","Nizh","Gora","Pleva","Drava","Sokol","Ruda","Mlada","Veliki","Dolna","Bela","Crna","Zlato","Kamen","Lipa","Visok","Modra","Orlov","Senta","Tarn","Velo","Korab","Pernik","Tuzla","Osek","Banja","Slano","Rovin","Hum","Pula","Skala","Vrana","Topla","Jezero"];
+const CUP_PREFIX=["FK","SK","NK","AC","Lokomotiv","Sparta","Slavoj","Polet","Rudar","Mladost","Sloga","Borac","Hajduk","Proleter","Jedinstvo","Olimpik"];
+function rngShuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function poisson(l){let L=Math.exp(-l),k=0,p=1;do{k++;p*=Math.random();}while(p>L);return k-1;}
+function genFillers(n){
+  const used=new Set(CLUBS.map(c=>c.name));const out=[];
+  while(out.length<n){
+    const town=CUP_TOWNS[Math.floor(Math.random()*CUP_TOWNS.length)];
+    const pre=CUP_PREFIX[Math.floor(Math.random()*CUP_PREFIX.length)];
+    const r=Math.random();
+    const name=r<0.45?pre+" "+town:(r<0.72?town+" Town":town+" United");
+    if(used.has(name))continue;used.add(name);
+    const tier=out.length<14?52+Math.floor(Math.random()*11):30+Math.floor(Math.random()*20); // ~14 near-league, rest amateur
+    out.push({name,abbr:town.slice(0,3).toUpperCase(),str:tier,isDynamo:false});
+  }
+  return out;
+}
+function initCup(){
+  const league=CLUBS.map((c,idx)=>({name:c.name,abbr:c.abbr,str:c.str,isDynamo:idx===ME,idx}));
+  const field=rngShuffle(league.concat(genFillers(64-CLUBS.length)));
+  cup={round:0,field,alive:field.slice(),history:[],winner:null,dynamoOut:false};
+}
+function cupGoals(att,opp){return poisson(clamp(0.7+(att-opp)/30+(att-50)/70,0.18,3.0));}
+function dynamoCupScorers(k){const xi=pickXI(CLUBS[ME].squad,"442",injuredNames(ME));const s=[];for(let n=0;n<k;n++)s.push(teamScorer(xi).name);return s;}
+function playCupRound(){
+  if(!cup||cup.winner)return;
+  if(cup.round>=6||season.round<CUP_UNLOCK[cup.round])return;
+  const a=rngShuffle(cup.alive.slice());const ties=[],next=[];let dynamoTie=null;
+  for(let i=0;i<a.length;i+=2){
+    const H=a[i],A=a[i+1];
+    let hg=cupGoals(H.str+4,A.str), ag=cupGoals(A.str,H.str+4), pens=null, winner;
+    if(hg===ag){
+      const hw=Math.random()<clamp(0.5+(H.str-A.str)*0.004,0.30,0.70);
+      winner=hw?H:A; pens=[4+Math.round(Math.random()),2+Math.floor(Math.random()*2)]; // [winnerPK, loserPK]
+    } else winner=hg>ag?H:A;
+    const tie={h:H,a:A,hg,ag,pens,winner};
+    if(H.isDynamo||A.isDynamo){dynamoTie=tie;const meH=H.isDynamo;tie.dynamoScorers=dynamoCupScorers(meH?hg:ag);
+      if(!winner.isDynamo)cup.dynamoOut=true;}
+    ties.push(tie);next.push(winner);
+  }
+  cup.history.push({name:CUP_ROUND_NAMES[cup.round],ties,dynamoTie});
+  cup.alive=next;cup.round++;
+  if(cup.alive.length===1)cup.winner=cup.alive[0];
+  renderHub();
+}
+function renderCup(){
+  if(!cup){$("cupBody").innerHTML="";return;}
+  const nx=Math.min(cup.round,5), done=!!cup.winner;
+  $("cupRoundTag").textContent=done?("Won by "+cup.winner.name):CUP_ROUND_NAMES[nx];
+  let html="";
+  const path=cup.history.filter(r=>r.dynamoTie).map(r=>{
+    const t=r.dynamoTie, meH=t.h.isDynamo, opp=meH?t.a:t.h, ms=meH?t.hg:t.ag, os=meH?t.ag:t.hg;
+    const won=t.winner.isDynamo, mark=won?'<span style="color:var(--green)">W</span>':'<span style="color:var(--crimson)">L</span>';
+    const pens=t.pens?` <span class="tag">(pens ${won?t.pens[0]+'-'+t.pens[1]:t.pens[1]+'-'+t.pens[0]})</span>`:'';
+    const sc=(t.dynamoScorers&&t.dynamoScorers.length)?`<div style="font-size:11px;color:var(--dim);padding:0 0 3px 20px">⚽ ${t.dynamoScorers.join(", ")}</div>`:'';
+    return `<div class="fixrow"><span>${mark} <span class="tag">${r.name}</span> v <b>${opp.name}</b></span><span class="res">${ms}–${os}${pens}</span></div>${sc}`;
+  }).join("");
+  if(path)html+=`<div class="tag" style="color:var(--white);margin-bottom:4px">DYNAMO'S CUP RUN</div>${path}`;
+  if(done){
+    html+=`<div style="margin-top:8px;color:var(--amber);font-size:15px">🏆 ${cup.winner.name} win the Dalnic Cup!</div>`;
+    if(cup.winner.isDynamo)html+='<div class="tag" style="color:var(--green)">Dynamo are cup champions.</div>';
+  } else if(cup.dynamoOut){
+    html+=`<div class="tag" style="margin-top:8px;color:var(--crimson)">Dynamo knocked out. ${cup.alive.length} clubs left chasing the cup.</div>`;
+  } else if(cup.round>0){
+    html+=`<div class="tag" style="margin-top:8px">Dynamo march on — ${CUP_ROUND_NAMES[nx]} next (${cup.alive.length} clubs remain).</div>`;
+  } else {
+    html+=`<div class="tag">64 clubs enter. The ${CUP_ROUND_NAMES[0]} awaits.</div>`;
+  }
+  const last=cup.history[cup.history.length-1];
+  if(last){
+    const ups=last.ties.filter(t=>{const hi=Math.max(t.h.str,t.a.str),lo=Math.min(t.h.str,t.a.str);return t.winner.str===lo && hi-lo>=12 && !t.h.isDynamo && !t.a.isDynamo;}).slice(0,3);
+    if(ups.length)html+=`<div class="tag" style="color:var(--white);margin:8px 0 4px">CUP MAGIC — ${last.name}</div>`+
+      ups.map(t=>`<div class="fixrow"><span>${t.h.name}</span><span class="res">${t.hg}–${t.ag}${t.pens?' p':''}</span><span style="text-align:right">${t.a.name}</span></div>`).join("");
+  }
+  $("cupBody").innerHTML=html;
+  const btn=$("btnCup");
+  if(done){btn.style.display="none";return;}
+  btn.style.display="";
+  const unlocked=season.round>=CUP_UNLOCK[cup.round];
+  btn.disabled=!unlocked;
+  btn.textContent=unlocked?("▶ Play "+CUP_ROUND_NAMES[cup.round]+(cup.dynamoOut?" (simulate)":"")):
+    (CUP_ROUND_NAMES[cup.round]+" opens after league round "+CUP_UNLOCK[cup.round]);
+}
+
+/* ---- wiring ---- */
+$("btnPlay").onclick=openTactics;
+$("btnQuick").onclick=quickResult;
+$("btnBackHub").onclick=()=>{renderHub();show("hub");};
+$("btnKick").onclick=playMatch;
+$("btnContinue").onclick=continueAfterMatch;
+$("btnSheets").onclick=()=>$("sheetPanel").classList.toggle("hidden");
+$("btnCup").onclick=playCupRound;
+$("btnStart").onclick=()=>show("hub");
+$("btnEndClose").onclick=()=>$("endOverlay").classList.add("hidden");
+$("formation").addEventListener("change",()=>{suggestXI();renderSelectTeam();});
+
+/* ---- boot ---- */
+newSeason();renderHub();show("landing");
+/* build: v0.3 — cup */
+</script>
+</body>
+</html>
