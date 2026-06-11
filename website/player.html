@@ -28,10 +28,6 @@
 </head>
 <body>
 
-<div class="topbar"><div class="wrap">
-  <span class="l">Season 2026/27 Dalnic Premier League</span>
-  <span class="r"><a href="dynamo-league.html" target="_blank" rel="noopener">Play the Game</a><a href="kit.html">Shop</a><a href="news.html">The Dispatch</a></span>
-</div></div>
 
 <header class="hdr" id="hdr"><div class="wrap">
   <a class="brand" href="index.html"><img src="crest.svg" alt="Dynamo Bresno crest"><span><b>Dynamo Bresno</b><span class="tl">Precision · Progress · Prestige</span></span></a>
@@ -43,6 +39,7 @@
     <a class="on" href="squad.html">Team</a>
     <a href="club.html">Club</a>
         <a href="dynamo-league.html" target="_blank" rel="noopener">The Game</a>
+    <a href="shop">Shop</a>
     <a class="join" href="#join">Join the Club</a>
   </nav>
 </div></header>
@@ -66,11 +63,11 @@
     </div>
     <div class="foot-col">
       <h4>Explore</h4>
-      <a href="dynamo-league.html" target="_blank" rel="noopener">The Game</a><a href="news.html">Stories</a><a href="kit.html">Shop</a>    </div>
+      <a href="dynamo-league.html" target="_blank" rel="noopener">The Game</a><a href="news.html">Dispatch</a><a href="shop">Shop</a>    </div>
     <div class="foot-col foot-news" id="join">
       <img class="dispatch-logo" src="images/dispatch-logo.gif" alt="The Dynamo Dispatch" onerror="this.style.display='none'">
       <h4>The Dynamo Dispatch</h4>
-      <p>News, stories and bonus features, straight to your inbox. Free, via Substack.</p>
+      <p>Sign up and get the news first.</p>
       <form onsubmit="return subscribeDispatch(event,'f')">
         <input type="email" id="f-email" placeholder="your@email.com" required>
         <button class="btn btn-gold" type="submit">Subscribe</button>
@@ -135,4 +132,26 @@
   var bio = (p.bio || []).map(function(par){ return '<p>'+par+'</p>'; }).join('');
   el.innerHTML =
     '<div class="profile-top">'+
-      '<di
+      '<div class="profile-photo" style="background-image:url(\''+photo+'\'),linear-gradient(180deg,#1d3a57,#0e1d2e)">'+
+        (p.num ? '<span class="num">'+p.num+'</span>' : '')+
+      '</div>'+
+      '<div class="profile-head">'+
+        '<div class="kicker">First Team'+(p.role ? ' · '+p.role : '')+'</div>'+
+        '<h1>'+p.name+'</h1>'+
+        '<div class="pos" style="font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.1em;font-size:.85rem">'+(p.posFull||p.pos)+(p.trait ? ' · '+p.trait : '')+'</div>'+
+        '<div class="profile-facts">'+
+          facts.map(function(f){ return '<div><div class="l">'+f[0]+'</div><div class="v">'+f[1]+'</div></div>'; }).join('')+
+        '</div>'+
+        ((p.attrs && p.attrs.length) ? '<div class="attrs"><span class="attrs-label">Key attributes</span><ul>'+p.attrs.map(function(a){return '<li>'+a+'</li>';}).join('')+'</ul></div>' : '')+
+        '<div class="profile-body">'+
+          (p.watch ? '<h3>What to watch</h3><p>'+p.watch+'</p>' : '')+
+          '<h3>Profile</h3>'+ bio +
+          (p.previous ? '<h3>Previous clubs</h3><p>'+p.previous+'</p>' : '')+
+        '</div>'+
+      '</div>'+
+    '</div>';
+})();
+</script>
+<script src="app.js"></script>
+</body>
+</html>

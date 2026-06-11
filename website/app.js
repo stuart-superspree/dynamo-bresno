@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded', function(){
     track.addEventListener('scroll', sync); window.addEventListener('resize', sync); sync();
   }
 
-  // ---- Dispatch article prev/next (chronological: left = older, right = newer) ----
+  // ---- Dispatch article prev/next (left = newer, right = older) ----
   var DISPATCH = ['article-champions.html','article-velkovic-statement.html','article-vff-investigation.html','article-disciplinary.html','article-vff-findings.html','article-ganivic.html','article-board-future.html','article-varga-appointed.html','article-varga-scouted.html'];
   var artFile = location.pathname.split('/').pop();
   var ai = DISPATCH.indexOf(artFile);
@@ -105,11 +105,11 @@ document.addEventListener('DOMContentLoaded', function(){
       a.innerHTML = (dir === 'prev') ? '‹' : '›';
       document.body.appendChild(a);
     };
-    addArrow('prev', older, 'Older post');
-    addArrow('next', newer, 'Newer post');
+    addArrow('prev', newer, 'Newer post');
+    addArrow('next', older, 'Older post');
     document.addEventListener('keydown', function(e){
-      if(e.key === 'ArrowLeft' && older) location.href = older;
-      if(e.key === 'ArrowRight' && newer) location.href = newer;
+      if(e.key === 'ArrowLeft' && newer) location.href = newer;
+      if(e.key === 'ArrowRight' && older) location.href = older;
     });
   }
 
