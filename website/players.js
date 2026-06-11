@@ -201,4 +201,7 @@ const PLAYERS = {
    trait:"fox in the box, quick reactions",
    watch:"Feels undervalued in the hierarchy, and has fallen under suspicion of leaking tactics and team news to journalists.",
    bio:["A sharp penalty-box poacher, competitive and fiery, with the quick reactions of a natural finisher.",
-        "A Copenhagen forward who arrived on loan and was made permanent in the summer with Montiselle's backing, 
+        "A Copenhagen forward who arrived on loan and was made permanent in the summer with Montiselle's backing, a move that has bred some dressing-room unrest."],
+   previous:"Lyngby, FC Copenhagen" }
+
+};
