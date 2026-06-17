@@ -469,3 +469,104 @@ h1,h2,h3{font-family:'Playfair Display',serif;font-weight:700;line-height:1.08}
 /* The Dynamo Dispatch animated logo */
 .dispatch-logo{display:block;width:72px;height:72px;border-radius:50%;object-fit:cover;margin:0 auto 18px;box-shadow:0 0 0 1px rgba(212,175,93,.4)}
 .foot-news .dispatch-logo{width:46px;height:46px;margin:0 0 14px}
+
+/* ===================================================================
+   shadcn-inspired refinement layer (v4)
+   Consistent radii on media + controls, soft elevation, refined
+   focus rings and smoother interaction. Brand palette and the
+   de-boxed editorial sections are left intact.
+   =================================================================== */
+:root{
+  --radius:10px;            /* media + cards */
+  --radius-sm:7px;          /* buttons, inputs */
+  --ring:rgba(201,164,76,.45);
+  --ring-crimson:rgba(160,39,50,.20);
+  --shadow-sm:0 1px 2px rgba(0,0,0,.20);
+  --shadow:0 8px 24px rgba(0,0,0,.24);
+  --shadow-lg:0 18px 44px rgba(0,0,0,.34);
+}
+
+/* Buttons — soft radius, subtle depth, tactile press, ring focus */
+.btn{border-radius:var(--radius-sm);
+  transition:background .2s,color .2s,border-color .2s,box-shadow .2s,transform .12s}
+.btn-crimson,.btn-primary,.btn-gold{box-shadow:var(--shadow-sm)}
+.btn-crimson:hover,.btn-primary:hover,.btn-gold:hover{box-shadow:var(--shadow);transform:translateY(-1px)}
+.btn:active{transform:translateY(0)}
+.btn:focus-visible{outline:none;box-shadow:0 0 0 3px var(--ring)}
+.btn-ghost:hover{background:rgba(241,232,212,.06)}
+.btn-ghost-dark:hover{background:rgba(160,39,50,.05)}
+.nav .join{border-radius:var(--radius-sm)}
+
+/* Inputs — radius + shadcn-style focus ring */
+.dispatch input,.band input,.foot-news input,.foot-dispatch input{
+  border-radius:var(--radius-sm);transition:border-color .2s,box-shadow .2s}
+.dispatch input:focus,.band input:focus{box-shadow:0 0 0 3px var(--ring-crimson)}
+.foot-news input:focus,.foot-dispatch input:focus{box-shadow:0 0 0 3px var(--ring)}
+
+/* Filter chips — pill toggles */
+.chip{border-radius:999px}
+
+/* Media — consistent rounded corners across the site */
+.player .pimg,.pl .pic,.profile-photo,.promo .pic,.news .lead .pic,
+.news-lead .article-img,.news-lead .thumb,.article .article-img,
+.kit-hero .khimg,.kit .kimg,.staff-av,.game-band .game-art{
+  border-radius:var(--radius);overflow:hidden}
+
+/* Cards & tiles — gentle elevation on hover */
+.player{transition:transform .2s}
+.player:hover{transform:translateY(-3px)}
+.player:hover .pimg{box-shadow:var(--shadow)}
+.kit .kimg{transition:transform .2s,box-shadow .2s}
+.kit:hover .kimg{transform:translateY(-3px);box-shadow:var(--shadow)}
+.car-card{box-shadow:var(--shadow-sm)}
+.car-card:hover{box-shadow:var(--shadow)}
+
+/* Labels / badges — softened corners */
+.hero .tag,.promo .pic .badge,.fix-row .teams .ha{border-radius:5px}
+
+/* ===================================================================
+   Main-nav hover dropdowns (Club / Stories / Games)
+   Desktop: open on hover + keyboard focus. Mobile: expanded inline.
+   =================================================================== */
+.hdr .wrap{align-items:stretch}
+.nav{align-items:center}
+.nav-item{position:relative;align-self:stretch;display:flex;align-items:center}
+.nav .navp::after{content:"\25BE";font-size:.62em;margin-left:7px;opacity:.6;transition:.2s}
+.nav-item:hover .navp::after,.nav-item:focus-within .navp::after{opacity:1;color:var(--gold)}
+.nav .dropdown{position:absolute;top:100%;left:-14px;min-width:214px;display:flex;flex-direction:column;
+  background:var(--navy-deep);border:1px solid rgba(241,232,212,.14);border-top:2px solid var(--gold);
+  border-radius:0 0 var(--radius-sm) var(--radius-sm);box-shadow:0 20px 46px rgba(0,0,0,.5);
+  padding:6px 0;opacity:0;visibility:hidden;transform:translateY(8px);
+  transition:opacity .18s ease,transform .18s ease,visibility .18s;z-index:80}
+.nav-item:hover .dropdown,.nav-item:focus-within .dropdown{opacity:1;visibility:visible;transform:none}
+.nav .dropdown a{padding:11px 22px;border-bottom:none;font-size:.82rem;letter-spacing:.1em;
+  color:var(--cream);white-space:nowrap;transition:background .15s,color .15s}
+.nav .dropdown a:hover{background:rgba(201,164,76,.16);color:#fff}
+
+@media(max-width:1100px){
+  .hdr .wrap{align-items:center}
+  .nav-item{align-self:auto;display:block}
+  .nav .navp::after{display:none}
+  .nav .dropdown{position:static;opacity:1;visibility:visible;transform:none;
+    box-shadow:none;border:none;border-radius:0;background:rgba(0,0,0,.22);padding:0;min-width:0}
+  .hdr.nav-open .nav .dropdown a{padding:12px 48px 12px 70px;font-size:.86rem;color:var(--cream-dim)}
+  .hdr.nav-open .nav .dropdown a:hover{background:rgba(201,164,76,.12)}
+}
+
+/* ---------- Section landing tiles (Games / Stories) ---------- */
+.tile-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:30px}
+.tile{display:block;background:rgba(255,255,255,.04);border:1px solid rgba(241,232,212,.14);
+  border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-sm);
+  transition:transform .2s,box-shadow .2s,border-color .2s}
+a.tile:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:var(--gold)}
+.tile .tmedia{aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(circle at 50% 38%,rgba(160,39,50,.32),transparent 60%),var(--navy-deep)}
+.tile .tmedia img{height:88px;opacity:.85;filter:drop-shadow(0 4px 12px rgba(0,0,0,.5))}
+.tile .tbody{padding:24px 26px 28px}
+.tile .tk{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.16em;font-size:.64rem;color:var(--gold)}
+.tile h3{font-size:1.6rem;color:#fff;margin:8px 0 10px}
+.tile p{color:var(--cream-dim);font-size:.98rem;margin-bottom:18px}
+.tile .soon{display:inline-block;font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.14em;
+  font-size:.7rem;color:var(--cream-dim);opacity:.7;border:1px solid rgba(241,232,212,.2);border-radius:var(--radius-sm);padding:9px 16px}
+@media(max-width:760px){.tile-grid{grid-template-columns:1fr}}
+
