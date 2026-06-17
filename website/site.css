@@ -570,3 +570,9 @@ a.tile:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:va
   font-size:.7rem;color:var(--cream-dim);opacity:.7;border:1px solid rgba(241,232,212,.2);border-radius:var(--radius-sm);padding:9px 16px}
 @media(max-width:760px){.tile-grid{grid-template-columns:1fr}}
 
+/* Dispatch hero — trim top padding by the logo's ~90px footprint so its
+   overall height matches the other page heroes (which have no logo). */
+.page-hero.hero-dispatch{padding-top:60px}
+@media(max-width:980px){.page-hero.hero-dispatch{padding-top:20px}}
+@media(max-width:560px){.page-hero.hero-dispatch{padding-top:24px}}
+
