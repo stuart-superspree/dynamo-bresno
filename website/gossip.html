@@ -96,6 +96,20 @@
 .tx-list .to{color:var(--cyn)}
 .tx-sources{color:var(--cyn);font-size:1.18rem;margin:4px 0 2px}
 
+/* Rotating Ceefax subpages */
+.tx-body{min-height:500px}
+.tx-page{display:none}
+.tx-page.on{display:block;animation:txin .5s ease}
+@keyframes txin{from{opacity:.15}to{opacity:1}}
+.tx-load{display:none;text-align:center;padding:96px 0;text-transform:uppercase;letter-spacing:2px}
+.tx-load.on{display:block}
+.tx-load .big{font-size:1.6rem;color:var(--yel)}
+.tx-load .bar{margin-top:12px;color:var(--grn);letter-spacing:1px}
+.tx-cursor{display:inline-block;width:.55em;height:1.05em;background:var(--cyn);
+  animation:txblink 1s steps(1) infinite;vertical-align:-3px;margin-left:5px}
+@keyframes txblink{50%{opacity:0}}
+@media(prefers-reduced-motion:reduce){.tx-page{display:block!important;animation:none}.tx-load{display:none!important}}
+
 @media(max-width:560px){
   .tx-stage{padding:34px 12px 50px}
   .tx-screen{font-size:1.28rem;padding:20px 18px 18px;border-radius:12px;
@@ -128,7 +142,7 @@
   <div class="tx-screen">
 
     <div class="tx-bar">
-      <span class="t-cyn">P340</span>
+      <span class="t-cyn">P340 <span id="tx-pageno">1/3</span></span>
       <span class="mid">DYNAMO BRESNO</span>
       <span class="t-grn" id="tx-clock">MON 22 JUN&nbsp;&nbsp;00:00/00</span>
     </div>
@@ -145,66 +159,81 @@
     <p class="tx-sub">Summer 2026 &#9654; The Valrekian Rumour Mill</p>
     <div class="tx-rule">&#9620;&#9620;&#9620;&#9620;&#9620;&#9620;&#9620;&#9620;&#9620;&#9620;&#9620;&#9620;&#9620;&#9620;&#9620;&#9620;&#9620;&#9620;&#9620;&#9620;&#9620;&#9620;&#9620;&#9620;&#9620;&#9620;&#9620;&#9620;&#9620;&#9620;&#9620;&#9620;&#9620;&#9620;&#9620;&#9620;&#9620;&#9620;&#9620;&#9620;&#9620;&#9620;&#9620;&#9620;&#9620;&#9620;&#9620;</div>
 
-    <div class="tx-feature">
-      <p class="h">&#9608; Rumour of the Summer</p>
-      <p><span class="nm">David Krupa</span> &nbsp;Iron Bresno &#9654; Dynamo Bresno</p>
-      <p class="t-wht">Nothing would infuriate East Bresno more than the brightest Iron academy graduate in a decade crossing the river to join Montiselle's project. No club has confirmed contact. No agent has denied it. Which usually means the story has legs.</p>
-    </div>
+    <div class="tx-body" id="tx-body">
 
-    <p class="tx-section">&#9608; Back-page lead</p>
-    <div class="tx-item">
-      <p><span class="t-yel tx-tag">Havel</span> <span class="t-wht">Union Dalnica are readying a record domestic bid to prise away Dynamo's academy jewel &mdash; and Bundesliga clubs keep sending scouts to watch the 18-year-old too. Bresno's line: not for sale at any price.</span></p>
-      <p class="tx-src">&#9654; The Dynamo Dispatch / Dalnica Daily</p>
-    </div>
+      <div class="tx-load" id="tx-load">
+        <p class="big">&#9608; Loading page <span id="tx-load-no">2</span> of 3</p>
+        <p class="bar">Please hold<span class="tx-cursor"></span></p>
+      </div>
 
-    <p class="tx-section lk">&#9608; Rated: Likely</p>
-    <div class="tx-list">
-      <p><span class="nm">Benno Kreutzer</span> Dynamo Bresno &#9654; <span class="to">Lokomotiv Zreska</span> (loan) &mdash; first-team minutes for the young keeper.</p>
-      <p><span class="nm">Dominik Varga</span> Union Dalnica &#9654; <span class="to">Athletic Navorda</span> (loan) &mdash; to accelerate his development.</p>
-      <p><span class="nm">Andrej Novak</span> Athletic Navorda &#9654; <span class="to">SC Gradelheim</span> &mdash; chasing guaranteed football.</p>
-      <p><span class="nm">Emil Horvat</span> FK Dravona &#9654; <span class="to">Athletic Navorda</span> &mdash; Navorda move before the big clubs notice.</p>
-      <p><span class="nm">Leo Branik</span> Velkovic Eagles &#9654; <span class="to">Austria</span> &mdash; Austrian clubs keen on the young winger.</p>
-    </div>
+      <div class="tx-page on" data-p="0">
+        <div class="tx-feature">
+          <p class="h">&#9608; Rumour of the Summer</p>
+          <p><span class="nm">David Krupa</span> &nbsp;Iron Bresno &#9654; Dynamo Bresno</p>
+          <p class="t-wht">Nothing would infuriate East Bresno more than the brightest Iron academy graduate in a decade crossing the river to join Montiselle's project. No club has confirmed contact. No agent has denied it. Which usually means the story has legs.</p>
+        </div>
 
-    <p class="tx-section ps">&#9608; Rated: Possible</p>
-    <div class="tx-list">
-      <p><span class="nm">Nico Jovanovic</span> Dynamo Bresno &#9654; <span class="to">Iron Bresno</span> (loan) &mdash; a derby loan that would ignite all of Bresno.</p>
-      <p><span class="nm">Martin Horvat</span> Athletic Navorda &#9654; <span class="to">Dynamo Bresno</span> &mdash; another elite Valrekian prospect on the radar.</p>
-      <p><span class="nm">Filip Svec</span> Lokomotiv Zreska &#9654; <span class="to">Dynamo Bresno</span> &mdash; lined up should Fitzroy depart.</p>
-      <p><span class="nm">Haris Begovic</span> Port Vasska &#9654; <span class="to">France</span> &mdash; Ligue 1 scouts like his pace and directness.</p>
-      <p><span class="nm">David Krupa</span> Iron Bresno &#9654; <span class="to">Dynamo Bresno</span> &mdash; see Rumour of the Summer, above.</p>
-    </div>
+        <p class="tx-section">&#9608; Back-page lead</p>
+        <div class="tx-item">
+          <p><span class="t-yel tx-tag">Havel</span> <span class="t-wht">Union Dalnica are readying a record domestic bid to prise away Dynamo's academy jewel &mdash; and Bundesliga clubs keep sending scouts to watch the 18-year-old too. Bresno's line: not for sale at any price.</span></p>
+          <p class="tx-src">&#9654; The Dynamo Dispatch / Dalnica Daily</p>
+        </div>
+      </div>
 
-    <p class="tx-section uf">&#9608; Unlikely but fun</p>
-    <div class="tx-list">
-      <p><span class="nm">Liam Fitzroy</span> Dynamo Bresno &#9654; <span class="to">Port Vasska</span> &mdash; shock exit mooted after bust-ups with the staff.</p>
-      <p><span class="nm">Gabriel Mendes</span> Union Dalnica &#9654; <span class="to">Italy</span> &mdash; Serie A rate him Eastern Europe's most undervalued creator.</p>
-      <p><span class="nm">Ricardo Mendes</span> Port Vasska &#9654; <span class="to">FC Korvane</span> &mdash; Korvane chasing a marquee name to challenge Dynamo.</p>
-      <p><span class="nm">Milan Dragic</span> Dalnica Mariners &#9654; <span class="to">Union Dalnica</span> &mdash; resurfaces every summer despite repeated rejections.</p>
-      <p><span class="nm">Omar Al-Faraj</span> Dynamo Bresno &#9654; <span class="to">Saudi Arabia</span> &mdash; persistent talk of a move home.</p>
-    </div>
+      <div class="tx-page" data-p="1">
+        <p class="tx-section lk">&#9608; Rated: Likely</p>
+        <div class="tx-list">
+          <p><span class="nm">Benno Kreutzer</span> Dynamo Bresno &#9654; <span class="to">Lokomotiv Zreska</span> (loan) &mdash; first-team minutes for the young keeper.</p>
+          <p><span class="nm">Dominik Varga</span> Union Dalnica &#9654; <span class="to">Athletic Navorda</span> (loan) &mdash; to accelerate his development.</p>
+          <p><span class="nm">Andrej Novak</span> Athletic Navorda &#9654; <span class="to">SC Gradelheim</span> &mdash; chasing guaranteed football.</p>
+          <p><span class="nm">Emil Horvat</span> FK Dravona &#9654; <span class="to">Athletic Navorda</span> &mdash; Navorda move before the big clubs notice.</p>
+          <p><span class="nm">Leo Branik</span> Velkovic Eagles &#9654; <span class="to">Austria</span> &mdash; Austrian clubs keen on the young winger.</p>
+        </div>
 
-    <div class="tx-brief">
-      <p class="lbl">&#9654; Also doing the rounds</p>
-      <p><span class="nm">Diego Barros</span> homesick &mdash; a Brazil return whispered...</p>
-      <p><span class="nm">Leon Borkic</span> Union &#9654; Korvane, who'll pay over the odds...</p>
-      <p><span class="nm">Harin Kovac</span> Iron's cult hero eyed by Port Vasska...</p>
-      <p><span class="nm">Luka Svec</span> seeking a Lokomotiv move closer to family...</p>
-      <p><span class="nm">Emir Kovacevic</span> Velkovic &#9654; Union for striker cover...</p>
-      <p><span class="nm">Luis Ferreira</span> tempted stateside by the MLS lifestyle...</p>
-      <p><span class="nm">Leon Hartmann</span> Gradelheim &#9654; Red Star Olbrac...</p>
-      <p><span class="nm">Filip Weiss</span> Gradelheim &#9654; Union as a squad option...</p>
-      <p><span class="nm">Stefan Dragun</span> a shock Port Vasska move could make him a top earner...</p>
-      <p><span class="nm">Andrej Sestic</span> wanted by Korvane's recruiters...</p>
-      <p><span class="nm">Radek Matic</span> Lokomotiv veteran lined up by Union for depth...</p>
-      <p><span class="nm">Mateo Alvarez</span> Korvane &#9654; Spain after a strong season...</p>
-      <p><span class="nm">Martin Ekberg</span> drawing Premier League scouts to Korvane...</p>
-      <p><span class="nm">Tomas Kolar</span> Mariners teen tracked by Dynamo's academy...</p>
-      <p><span class="nm">Milan Krstic</span> (Union), <span class="nm">Boris Dragun</span> (Velkovic) &amp; <span class="nm">Pavel Krupa</span> (Navorda) all weighing up retirement...</p>
-    </div>
+        <p class="tx-section ps">&#9608; Rated: Possible</p>
+        <div class="tx-list">
+          <p><span class="nm">Nico Jovanovic</span> Dynamo Bresno &#9654; <span class="to">Iron Bresno</span> (loan) &mdash; a derby loan that would ignite all of Bresno.</p>
+          <p><span class="nm">Martin Horvat</span> Athletic Navorda &#9654; <span class="to">Dynamo Bresno</span> &mdash; another elite Valrekian prospect on the radar.</p>
+          <p><span class="nm">Filip Svec</span> Lokomotiv Zreska &#9654; <span class="to">Dynamo Bresno</span> &mdash; lined up should Fitzroy depart.</p>
+          <p><span class="nm">Haris Begovic</span> Port Vasska &#9654; <span class="to">France</span> &mdash; Ligue 1 scouts like his pace and directness.</p>
+          <p><span class="nm">David Krupa</span> Iron Bresno &#9654; <span class="to">Dynamo Bresno</span> &mdash; see Rumour of the Summer, page 1.</p>
+        </div>
 
-    <p class="tx-section">&#9608; Sources</p>
-    <p class="tx-sources">The Dynamo Dispatch, Dalnica Daily, The Capital Tribune, Football Valrekia, Radio Vasska &amp; sources close to the situation. Reliability varies considerably.</p>
+        <p class="tx-section uf">&#9608; Unlikely but fun</p>
+        <div class="tx-list">
+          <p><span class="nm">Liam Fitzroy</span> Dynamo Bresno &#9654; <span class="to">Port Vasska</span> &mdash; shock exit mooted after bust-ups with the staff.</p>
+          <p><span class="nm">Gabriel Mendes</span> Union Dalnica &#9654; <span class="to">Italy</span> &mdash; Serie A rate him Eastern Europe's most undervalued creator.</p>
+          <p><span class="nm">Ricardo Mendes</span> Port Vasska &#9654; <span class="to">FC Korvane</span> &mdash; Korvane chasing a marquee name to challenge Dynamo.</p>
+          <p><span class="nm">Milan Dragic</span> Dalnica Mariners &#9654; <span class="to">Union Dalnica</span> &mdash; resurfaces every summer despite repeated rejections.</p>
+          <p><span class="nm">Omar Al-Faraj</span> Dynamo Bresno &#9654; <span class="to">Saudi Arabia</span> &mdash; persistent talk of a move home.</p>
+        </div>
+      </div>
+
+      <div class="tx-page" data-p="2">
+        <div class="tx-brief" style="border-top:none;padding-top:0">
+          <p class="lbl">&#9654; Also doing the rounds</p>
+          <p><span class="nm">Diego Barros</span> homesick &mdash; a Brazil return whispered...</p>
+          <p><span class="nm">Leon Borkic</span> Union &#9654; Korvane, who'll pay over the odds...</p>
+          <p><span class="nm">Harin Kovac</span> Iron's cult hero eyed by Port Vasska...</p>
+          <p><span class="nm">Luka Svec</span> seeking a Lokomotiv move closer to family...</p>
+          <p><span class="nm">Emir Kovacevic</span> Velkovic &#9654; Union for striker cover...</p>
+          <p><span class="nm">Luis Ferreira</span> tempted stateside by the MLS lifestyle...</p>
+          <p><span class="nm">Leon Hartmann</span> Gradelheim &#9654; Red Star Olbrac...</p>
+          <p><span class="nm">Filip Weiss</span> Gradelheim &#9654; Union as a squad option...</p>
+          <p><span class="nm">Stefan Dragun</span> a shock Port Vasska move could make him a top earner...</p>
+          <p><span class="nm">Andrej Sestic</span> wanted by Korvane's recruiters...</p>
+          <p><span class="nm">Radek Matic</span> Lokomotiv veteran lined up by Union for depth...</p>
+          <p><span class="nm">Mateo Alvarez</span> Korvane &#9654; Spain after a strong season...</p>
+          <p><span class="nm">Martin Ekberg</span> drawing Premier League scouts to Korvane...</p>
+          <p><span class="nm">Tomas Kolar</span> Mariners teen tracked by Dynamo's academy...</p>
+          <p><span class="nm">Milan Krstic</span> (Union), <span class="nm">Boris Dragun</span> (Velkovic) &amp; <span class="nm">Pavel Krupa</span> (Navorda) all weighing up retirement...</p>
+        </div>
+
+        <p class="tx-section">&#9608; Sources</p>
+        <p class="tx-sources">The Dynamo Dispatch, Dalnica Daily, The Capital Tribune, Football Valrekia, Radio Vasska &amp; sources close to the situation. Reliability varies considerably.</p>
+      </div>
+
+    </div>
 
     <p class="tx-foot">All gossip is fiction, for entertainment only</p>
 
@@ -242,6 +271,48 @@
     var el=document.getElementById('tx-clock'); if(el) el.textContent=s;
   }
   tick(); setInterval(tick,1000);
+})();
+
+// Rotating Ceefax subpages: hold, "load", advance, loop.
+(function(){
+  var pages=[].slice.call(document.querySelectorAll('.tx-page'));
+  if(pages.length<2) return;
+  var load=document.getElementById('tx-load');
+  var pageNo=document.getElementById('tx-pageno');
+  var loadNo=document.getElementById('tx-load-no');
+  var screen=document.querySelector('.tx-screen');
+  var reduce=window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce){ pages.forEach(function(p){p.classList.add('on');}); if(pageNo)pageNo.textContent='1-3/3'; return; }
+
+  var DWELL=[15000,26000,24000];  // reading time per page
+  var LOAD=1700;                  // "please hold" pause
+  var i=0, t1=null, t2=null;
+
+  function clear(){ if(t1)clearTimeout(t1); if(t2)clearTimeout(t2); t1=t2=null; }
+  function showPage(n){
+    if(load) load.classList.remove('on');
+    pages.forEach(function(p,idx){ p.classList.toggle('on', idx===n); });
+    if(pageNo) pageNo.textContent=(n+1)+'/3';
+  }
+  function run(){
+    clear();
+    showPage(i);
+    t1=setTimeout(function(){
+      var next=(i+1)%pages.length;
+      pages.forEach(function(p){ p.classList.remove('on'); });
+      if(loadNo) loadNo.textContent=(next+1);
+      if(pageNo) pageNo.textContent=(next+1)+'/3';
+      if(load) load.classList.add('on');
+      t2=setTimeout(function(){ i=next; run(); }, LOAD);
+    }, DWELL[i]||22000);
+  }
+  run();
+
+  // Pause while hovering so you can finish reading; resume on leave.
+  if(screen){
+    screen.addEventListener('mouseenter', function(){ clear(); showPage(i); });
+    screen.addEventListener('mouseleave', function(){ run(); });
+  }
 })();
 </script>
 <script src="app.js"></script>
