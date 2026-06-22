@@ -108,7 +108,7 @@
 .tx-cursor{display:inline-block;width:.55em;height:1.05em;background:var(--cyn);
   animation:txblink 1s steps(1) infinite;vertical-align:-3px;margin-left:5px}
 @keyframes txblink{50%{opacity:0}}
-@media(prefers-reduced-motion:reduce){.tx-page{display:block!important;animation:none}.tx-load{display:none!important}}
+@media(prefers-reduced-motion:reduce){.tx-page.on{animation:none}}
 
 @media(max-width:560px){
   .tx-stage{padding:34px 12px 50px}
@@ -281,8 +281,6 @@
   var pageNo=document.getElementById('tx-pageno');
   var loadNo=document.getElementById('tx-load-no');
   var screen=document.querySelector('.tx-screen');
-  var reduce=window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if(reduce){ pages.forEach(function(p){p.classList.add('on');}); if(pageNo)pageNo.textContent='1-3/3'; return; }
 
   var DWELL=[15000,26000,24000];  // reading time per page
   var LOAD=1700;                  // "please hold" pause
