@@ -174,22 +174,22 @@
         <div>
           <label>Formation</label>
           <select id="formation">
-            <option value="442">4-4-2 — Balanced</option>
-            <option value="433">4-3-3 — Front Three</option>
-            <option value="4231">4-2-3-1 — Modern</option>
-            <option value="352">3-5-2 — Wing-Backs</option>
-            <option value="451">4-5-1 — Containment</option>
+            <option value="442">4-4-2: Balanced</option>
+            <option value="433">4-3-3: Front Three</option>
+            <option value="4231">4-2-3-1: Modern</option>
+            <option value="352">3-5-2: Wing-Backs</option>
+            <option value="451">4-5-1: Containment</option>
           </select>
         </div>
         <div>
           <label>Team Talk</label>
           <select id="mood">
-            <option value="0.85">Demand a win — pile on the pressure</option>
+            <option value="0.85">Demand a win: pile on the pressure</option>
             <option value="0.5">Fire them up</option>
             <option value="0.3">Express belief in the squad</option>
             <option value="0" selected>Calm &amp; focused</option>
-            <option value="0.2">Underdogs — play with freedom</option>
-            <option value="-0.3">Steady — protect the result</option>
+            <option value="0.2">Underdogs: play with freedom</option>
+            <option value="-0.3">Steady: protect the result</option>
           </select>
         </div>
       </div>
@@ -228,7 +228,7 @@
   <div id="match" class="hidden">
     <div class="scoreboard">
       <div class="team"><span id="sbHome"></span><br><span class="pill" id="sbHomeStyle"></span></div>
-      <div><div class="score"><span id="scH">0</span> – <span id="scA">0</span></div>
+      <div><div class="score"><span id="scH">0</span> - <span id="scA">0</span></div>
         <div class="clock" id="clock" style="text-align:center">0'</div></div>
       <div class="team"><span id="sbAway"></span><br><span class="pill" id="sbAwayStyle"></span></div>
     </div>
@@ -248,9 +248,9 @@
     <div class="statline"><span class="lbl">Possession</span><span><span class="h" id="stPossH">50%</span> &middot; <span class="a" id="stPossA">50%</span></span></div>
     <div id="ftBox" class="hidden">
       <div class="panel" style="margin-top:14px"><h2>Match Stats</h2><div id="statBox"></div></div>
-      <div class="panel"><h2>Player Ratings — Both Sides</h2><div id="ratingsBox" class="grid2"></div></div>
+      <div class="panel"><h2>Player Ratings: Both Sides</h2><div id="ratingsBox" class="grid2"></div></div>
       <div class="panel" id="leagueFeedPanel"><h2>League Feed</h2><div id="leagueFeed"></div></div>
-      <button class="primary" id="btnContinue">▶ Continue — Simulate Round</button>
+      <button class="primary" id="btnContinue">▶ Continue: Simulate Round</button>
     </div>
   </div>
 
@@ -261,7 +261,7 @@
       <h2 id="endTitle"></h2>
       <div class="pos" id="endPos"></div>
       <p id="endMsg"></p>
-      <div class="modal-sign">&mdash; The Board</div>
+      <div class="modal-sign">The Board</div>
       <button class="primary" id="btnEndClose">Close</button>
     </div>
   </div>
@@ -512,10 +512,10 @@ function teamNews(ci){
     if(dep)items.push({c:"debut",t:`<b>${dep.name}</b> handed a rare start in the depleted side.`});
   }
   c.squad.filter(p=>!out.has(p.name)).forEach(p=>{const g5=recentGoals(ci,p.name,5);
-    if(g5>=3)items.push({c:"hot",t:`<b>${p.name}</b> in red-hot form — ${g5} in his last 5.`});});
+    if(g5>=3)items.push({c:"hot",t:`<b>${p.name}</b> in red-hot form, ${g5} in his last 5.`});});
   const top=Object.values(season.scorers).sort((a,b)=>b.goals-a.goals)[0];
   if(top&&top.club===c.abbr&&top.goals>=4)items.push({c:"top",t:`<b>${top.name}</b> tops the Dalnic scoring charts (${top.goals}).`});
-  if(!items.length)items.push({c:"none",t:"Clean bill of health — a settled side."});
+  if(!items.length)items.push({c:"none",t:"Clean bill of health. A settled side."});
   return items.slice(0,5);
 }
 function addScorer(p,clubIdx){
@@ -594,7 +594,7 @@ function renderHub(){
   if(season.lastRound){
     $("lastFix").innerHTML=season.lastRound.map(r=>{
       const me=r.h===ME||r.a===ME;
-      return `<div class="fixrow"><span class="${me?'me-fix':''}">${CLUBS[r.h].name}</span><span class="res">${r.hg}–${r.ag}</span><span class="${me?'me-fix':''}" style="text-align:right">${CLUBS[r.a].name}</span></div>`;
+      return `<div class="fixrow"><span class="${me?'me-fix':''}">${CLUBS[r.h].name}</span><span class="res">${r.hg}-${r.ag}</span><span class="${me?'me-fix':''}" style="text-align:right">${CLUBS[r.a].name}</span></div>`;
     }).join("");
   }
   renderCup();
@@ -741,7 +741,7 @@ function ratingsTable(ci,xi,rt,goals,label){
   const me=ci===ME;
   const rows=xi.map(p=>{const g=goals.filter(x=>x.num===p.num&&x.name===p.name).length;
     return `<tr><td class="l">${p.num}</td><td class="l">${p.name}</td><td class="l">${p.slot}</td><td class="rating">${(rt[p.num]||6.6).toFixed(1)}</td><td>${g||''}</td></tr>`;}).join("");
-  return `<div><div class="tag" style="color:${me?'var(--white)':'var(--dim)'};margin-bottom:4px">${label}${me?' — DYNAMO':''}</div>
+  return `<div><div class="tag" style="color:${me?'var(--white)':'var(--dim)'};margin-bottom:4px">${label}${me?' &middot; DYNAMO':''}</div>
     <table><thead><tr><th class="l">#</th><th class="l">Player</th><th class="l">Pos</th><th>Rt</th><th>G</th></tr></thead><tbody>${rows}</tbody></table></div>`;
 }
 function leagueFeedHTML(){
@@ -757,10 +757,10 @@ function leagueFeedHTML(){
     const k=p.name+"|"+CLUBS[ME].abbr, tally=prov[k].goals;
     const rank=ranked.findIndex(x=>x.name===p.name&&x.club===CLUBS[ME].abbr)+1;
     const inM=myGoals.filter(x=>x.name===p.name).length;
-    lines.push(`<div style="padding:3px 0;font-size:12.5px">⚽ <b>${p.name}</b>${inM>1?' ('+inM+')':''} — now <b>${tally}</b> for the season, ${ordinal(rank)} in the scoring race.</div>`);});
+    lines.push(`<div style="padding:3px 0;font-size:12.5px">⚽ <b>${p.name}</b>${inM>1?' ('+inM+')':''}, now <b>${tally}</b> for the season, ${ordinal(rank)} in the scoring race.</div>`);});
   if(!myGoals.length)lines.push('<div class="tag" style="padding:3px 0">No Dynamo scorers today.</div>');
   const top=ranked[0];
-  if(top)lines.push(`<div style="padding:4px 0 0;font-size:12px" class="tag">Golden Boot lead: <span style="color:var(--amber)">${top.name} (${top.club}) — ${top.goals}</span></div>`);
+  if(top)lines.push(`<div style="padding:4px 0 0;font-size:12px" class="tag">Golden Boot lead: <span style="color:var(--amber)">${top.name} (${top.club}) on ${top.goals}</span></div>`);
   return lines.join("");
 }
 function finishMatch(){
@@ -880,7 +880,7 @@ function renderCup(){
     const won=t.winner.isDynamo, mark=won?'<span style="color:var(--green)">W</span>':'<span style="color:var(--crimson)">L</span>';
     const pens=t.pens?` <span class="tag">(pens ${won?t.pens[0]+'-'+t.pens[1]:t.pens[1]+'-'+t.pens[0]})</span>`:'';
     const sc=(t.dynamoScorers&&t.dynamoScorers.length)?`<div style="font-size:11px;color:var(--dim);padding:0 0 3px 20px">⚽ ${t.dynamoScorers.join(", ")}</div>`:'';
-    return `<div class="fixrow"><span>${mark} <span class="tag">${r.name}</span> v <b>${opp.name}</b></span><span class="res">${ms}–${os}${pens}</span></div>${sc}`;
+    return `<div class="fixrow"><span>${mark} <span class="tag">${r.name}</span> v <b>${opp.name}</b></span><span class="res">${ms}-${os}${pens}</span></div>${sc}`;
   }).join("");
   if(path)html+=`<div class="tag" style="color:var(--white);margin-bottom:4px">DYNAMO'S CUP RUN</div>${path}`;
   if(done){
@@ -889,15 +889,15 @@ function renderCup(){
   } else if(cup.dynamoOut){
     html+=`<div class="tag" style="margin-top:8px;color:var(--crimson)">Dynamo knocked out. ${cup.alive.length} clubs left chasing the cup.</div>`;
   } else if(cup.round>0){
-    html+=`<div class="tag" style="margin-top:8px">Dynamo march on — ${CUP_ROUND_NAMES[nx]} next (${cup.alive.length} clubs remain).</div>`;
+    html+=`<div class="tag" style="margin-top:8px">Dynamo march on. ${CUP_ROUND_NAMES[nx]} next (${cup.alive.length} clubs remain).</div>`;
   } else {
     html+=`<div class="tag">64 clubs enter. The ${CUP_ROUND_NAMES[0]} awaits.</div>`;
   }
   const last=cup.history[cup.history.length-1];
   if(last){
     const ups=last.ties.filter(t=>{const hi=Math.max(t.h.str,t.a.str),lo=Math.min(t.h.str,t.a.str);return t.winner.str===lo && hi-lo>=12 && !t.h.isDynamo && !t.a.isDynamo;}).slice(0,3);
-    if(ups.length)html+=`<div class="tag" style="color:var(--white);margin:8px 0 4px">CUP MAGIC — ${last.name}</div>`+
-      ups.map(t=>`<div class="fixrow"><span>${t.h.name}</span><span class="res">${t.hg}–${t.ag}${t.pens?' p':''}</span><span style="text-align:right">${t.a.name}</span></div>`).join("");
+    if(ups.length)html+=`<div class="tag" style="color:var(--white);margin:8px 0 4px">CUP MAGIC: ${last.name}</div>`+
+      ups.map(t=>`<div class="fixrow"><span>${t.h.name}</span><span class="res">${t.hg}-${t.ag}${t.pens?' p':''}</span><span style="text-align:right">${t.a.name}</span></div>`).join("");
   }
   $("cupBody").innerHTML=html;
   const btn=$("btnCup");

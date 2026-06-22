@@ -8,7 +8,7 @@ function subscribeDispatch(e, prefix){
   var url = 'https://thedynamodispatch.substack.com/subscribe' + (email ? '?email=' + encodeURIComponent(email) : '');
   window.open(url, '_blank', 'noopener');
   var ok = document.getElementById(prefix + '-ok');
-  if(ok) ok.textContent = "Opening The Dynamo Dispatch on Substack — confirm there to finish.";
+  if(ok) ok.textContent = "Opening The Dynamo Dispatch on Substack. Confirm there to finish.";
   if(input) input.value = "";
   return false;
 }

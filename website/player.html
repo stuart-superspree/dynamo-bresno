@@ -105,7 +105,7 @@
     var pageUrl = base + 'player.html?id=' + encodeURIComponent(id);
     var role = p.posFull || p.pos;
     var first = (p.bio && p.bio[0]) ? p.bio[0] : '';
-    var desc = (p.name + ' — ' + role + ', Dynamo Bresno first team. ' + first).slice(0, 300);
+    var desc = (p.name + ', ' + role + ', Dynamo Bresno first team. ' + first).slice(0, 300);
     function setMeta(type, key, val){
       var el = document.head.querySelector('meta[' + type + '="' + key + '"]');
       if(!el){ el = document.createElement('meta'); el.setAttribute(type, key); document.head.appendChild(el); }
