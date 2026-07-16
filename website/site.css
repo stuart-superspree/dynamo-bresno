@@ -83,7 +83,6 @@ h1,h2,h3{font-family:'Playfair Display',serif;font-weight:700;line-height:1.08}
   background:linear-gradient(90deg,rgba(8,14,22,.92),rgba(8,14,22,.3) 55%,rgba(8,14,22,0) 82%),
             linear-gradient(0deg,rgba(8,14,22,.94),transparent 52%),
             url('images/hero.jpg'),
-            url('images/hero-proto.jpg'),
             radial-gradient(120% 90% at 72% -10%,rgba(160,39,50,.5),transparent 60%) , var(--navy-mid);
   background-size:cover;background-position:center;background-repeat:no-repeat}
 .hero .wrap{width:100%;padding-top:64px;padding-bottom:72px}
@@ -309,6 +308,10 @@ h1,h2,h3{font-family:'Playfair Display',serif;font-weight:700;line-height:1.08}
 .article .standfirst{font-size:1.25rem;color:var(--cream);font-family:'Playfair Display',serif;font-style:italic;margin-bottom:14px}
 .article .byline{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.14em;font-size:.68rem;color:var(--cream-dim);padding-bottom:30px;margin-bottom:30px;border-bottom:1px solid rgba(241,232,212,.12)}
 .article p{color:var(--cream-dim);font-size:1.08rem;margin-bottom:22px}
+/* Lists in articles: same size/colour as paragraphs; bullets and numbers sit
+   exactly on the article's left margin, in line with all other text. */
+.article ul,.article ol{margin:0 0 22px;padding-left:0;list-style-position:inside}
+.article li{color:var(--cream-dim);font-size:1.08rem;line-height:1.6;margin-bottom:10px}
 .article h2{font-size:1.8rem;color:#fff;margin:40px 0 14px}
 .article .pull{font-family:'Playfair Display',serif;font-style:italic;font-size:1.6rem;color:var(--gold-b);
   border-left:2px solid var(--gold);padding-left:26px;margin:36px 0;line-height:1.4}
@@ -569,6 +572,25 @@ a.tile:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:va
 .tile .soon{display:inline-block;font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.14em;
   font-size:.7rem;color:var(--cream-dim);opacity:.7;border:1px solid rgba(241,232,212,.2);border-radius:var(--radius-sm);padding:9px 16px}
 @media(max-width:760px){.tile-grid{grid-template-columns:1fr}}
+
+/* ---------- Game cover tiles: box art beside the text, stacked on phones.
+   The full cover is always visible (contain, never crop); navy fills any spare space. ---------- */
+.cover-tile{display:grid;grid-template-columns:280px 1fr;align-items:stretch}
+.cover-tile .tcover{background:var(--navy-deep);display:flex;align-items:center;justify-content:center;min-height:0}
+.cover-tile .tcover img{display:block;width:100%;height:auto;max-height:100%;object-fit:contain}
+@media(max-width:700px){.cover-tile{grid-template-columns:1fr}.cover-tile .tcover img{max-height:none}}
+
+/* ---------- Story bundles: one serial per row, parts left to right on desktop,
+   a single column running down the page on phones. Bundles stack oldest-first. ---------- */
+.bundle{margin-bottom:56px}
+.bundle:last-child{margin-bottom:0}
+.bundle-head{margin-bottom:22px}
+.bundle-head .bk{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.16em;font-size:.64rem;color:var(--gold)}
+.bundle-head h2{font-size:2rem;color:#fff;margin:6px 0 8px}
+.bundle-head p{color:var(--cream-dim);font-size:.98rem;max-width:720px}
+.bundle-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+@media(max-width:900px){.bundle-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.bundle-grid{grid-template-columns:1fr}}
 
 /* Dispatch hero — trim top padding by the logo's ~90px footprint so its
    overall height matches the other page heroes (which have no logo). */

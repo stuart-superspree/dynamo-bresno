@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fixtures · Dynamo Bresno</title>
+<meta name="description" content="Dynamo Bresno 2026/27 fixtures. The full Dalnic Premier League schedule, home and away, with Valrekia Cup rounds.">
+<link rel="icon" href="crest.svg">
+<link rel="stylesheet" href="site.css">
+<link rel="canonical" href="https://www.dynamobresno.com/fixtures.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Dynamo Bresno">
+<meta property="og:title" content="Fixtures · Dynamo Bresno">
+<meta property="og:description" content="Dynamo Bresno 2026/27 fixtures. The full Dalnic Premier League schedule, home and away.">
+<meta property="og:url" content="https://www.dynamobresno.com/fixtures.html">
+<meta property="og:image" content="https://www.dynamobresno.com/crest.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Fixtures · Dynamo Bresno">
+<meta name="twitter:description" content="Dynamo Bresno 2026/27 fixtures. The full Dalnic Premier League schedule, home and away.">
+<meta name="twitter:image" content="https://www.dynamobresno.com/crest.png">
+<style>
+.fixtures{max-width:780px;margin:0 auto}
+.fx-month{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.14em;
+  font-size:.92rem;color:var(--crimson);margin:34px 0 14px;padding-bottom:9px;
+  border-bottom:1px solid rgba(160,39,50,.22)}
+.fx-month:first-child{margin-top:0}
+.fx{display:grid;grid-template-columns:46px 64px 1fr auto;gap:14px;align-items:center;
+  padding:13px 16px;border:1px solid rgba(20,24,40,.1);border-radius:var(--radius-sm);
+  margin-bottom:9px;background:#fff;box-shadow:var(--shadow-sm);transition:box-shadow .2s,transform .15s}
+.fx:hover{box-shadow:var(--shadow);transform:translateY(-1px)}
+.fx .md{display:flex;align-items:center;justify-content:center;width:34px;height:34px;
+  border-radius:50%;background:var(--navy);color:#fff;font-family:'Oswald',sans-serif;
+  font-weight:600;font-size:.92rem}
+.fx .date{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.05em;
+  font-size:.84rem;color:var(--ink-dim,#5a6072);line-height:1.2}
+.fx .match{font-size:1.04rem;line-height:1.35;color:var(--crimson,#A02732);font-weight:700}
+.fx .match .dynamo{font-weight:700;color:var(--navy)}
+.fx .match .v{color:#9aa0ac;padding:0 6px;font-size:.86rem;font-weight:400}
+.fx .tags{display:flex;gap:6px;align-items:center;justify-self:end;flex-wrap:wrap;justify-content:flex-end}
+.fx .ha{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.08em;
+  font-size:.66rem;padding:5px 10px;border-radius:999px;white-space:nowrap}
+.ha-home{background:var(--gold,#c9a44c);color:#1a1d29}
+.ha-away{background:transparent;color:#5a6072;border:1px solid rgba(20,24,40,.22)}
+.fx .derby{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.08em;
+  font-size:.66rem;padding:5px 10px;border-radius:999px;background:var(--crimson);color:#fff;white-space:nowrap}
+.fx-event{display:flex;align-items:center;gap:12px;padding:10px 16px;margin-bottom:9px;
+  border-radius:var(--radius-sm);background:rgba(20,24,40,.04);color:#5a6072;
+  font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.08em;font-size:.78rem}
+.fx-event .ev-date{color:var(--navy);font-weight:600;min-width:64px}
+.fx-event.cup{background:rgba(201,164,76,.12)}
+.fx-event.cup .ev-date{color:var(--crimson)}
+.fx-legend{display:flex;gap:18px;flex-wrap:wrap;margin:0 auto 26px;max-width:780px;
+  font-size:.82rem;color:#5a6072}
+.fx-legend span{display:inline-flex;align-items:center;gap:7px}
+.fx-legend i{width:13px;height:13px;border-radius:4px;display:inline-block}
+@media(max-width:560px){
+  .fx{grid-template-columns:38px 1fr;gap:8px 12px;row-gap:6px}
+  .fx .date{grid-column:2;order:2}
+  .fx .match{grid-column:1 / -1;order:3}
+  .fx .tags{grid-column:1 / -1;order:4;justify-self:start;justify-content:flex-start}
+  .fx .md{grid-row:1 / span 1}
+}
+</style>
+</head>
+<body>
+
+<header class="hdr" id="hdr"><div class="wrap">
+  <a class="brand" href="index.html"><img src="crest.svg" alt="Dynamo Bresno crest"><span><b>Dynamo Bresno</b><span class="tl">Precision &middot; Progress &middot; Prestige</span></span></a>
+  <button class="navbtn" id="navbtn" aria-label="Menu">Menu &#9662;</button>
+  <nav class="nav" id="nav">
+    <a href="index.html">Home</a>
+    <div class="nav-item"><a href="news.html" class="navp">News</a><div class="dropdown"><a href="news.html">The Dispatch</a><a href="gossip.html">Transfer Gossip</a></div></div>
+    <div class="nav-item"><a href="club.html" class="navp">Club</a><div class="dropdown"><a href="club.html#history">History</a><a href="club.html#stadium">Stadium</a><a href="club.html#valrekia">Valrekia</a><a href="club.html#iron-divide">The Iron Divide</a><a href="club.html#montiselle">Montiselle</a></div></div>
+    <div class="nav-item"><a href="squad.html" class="navp on">Team</a><div class="dropdown"><a href="squad.html">First Team</a><a href="fixtures.html">Fixtures</a></div></div>
+    <div class="nav-item"><a href="league.html" class="navp">League</a><div class="dropdown"><a href="league-history.html">History</a><a href="league-clubs.html">Clubs</a><a href="league-fixtures.html">Fixtures</a><a href="league-table.html">Table</a></div></div>
+    <div class="nav-item"><a href="stories.html" class="navp">Stories</a><div class="dropdown"><a href="stories-short.html">Short</a><a href="stories-long.html">Long</a><a href="stories-comics.html">Comic Books</a><a href="stories-graphic-novels.html">Graphic Novels</a></div></div>
+    <div class="nav-item"><a href="games.html" class="navp">Games</a><div class="dropdown"><a href="team-manager.html" target="_blank" rel="noopener">Beat Varga</a><a href="fallen-giant.html" target="_blank" rel="noopener">Fallen Giant</a></div></div>
+    <a href="shop">Shop</a>
+    <a class="join" href="#join">Join the Club</a>
+  </nav>
+</div></header>
+
+<div class="page-hero"><img class="crest-bg" src="crest.svg" alt="">
+  <div class="wrap">
+    <span class="kicker">First Team &middot; 2026/27</span>
+    <h1>Fixtures</h1>
+    <p>Dynamo Bresno's Dalnic Premier League season, home and away. Valrekia Cup rounds are shown in sequence.</p>
+  </div>
+</div>
+
+<section class="block"><div class="wrap">
+
+  <div class="fx-legend">
+    <span><i class="ha-home" style="background:var(--gold,#c9a44c)"></i> Home, at the C&oelig;ur de Feu</span>
+    <span><i class="ha-away" style="border:1px solid rgba(20,24,40,.4);background:transparent"></i> Away</span>
+    <span><i style="background:var(--crimson)"></i> Bresno derby</span>
+  </div>
+
+  <div class="fixtures">
+
+    <p class="fx-month">August 2026</p>
+    <div class="fx-event"><span class="ev-date">15 Aug</span><span>Curtain-raiser friendly &middot; C&oelig;ur de Feu</span></div>
+    <div class="fx"><span class="md">1</span><span class="date">22 Aug</span><span class="match"><span class="dynamo">Dynamo Bresno</span><span class="v">v</span>SC Gradelheim</span><span class="tags"><span class="ha ha-home">Home</span></span></div>
+    <p class="fx-month">September 2026</p>
+    <div class="fx"><span class="md">2</span><span class="date">4 Sep</span><span class="match">Port Vasska FC<span class="v">v</span><span class="dynamo">Dynamo Bresno</span></span><span class="tags"><span class="ha ha-away">Away</span></span></div>
+    <div class="fx"><span class="md">3</span><span class="date">17 Sep</span><span class="match"><span class="dynamo">Dynamo Bresno</span><span class="v">v</span>FK Dravona</span><span class="tags"><span class="ha ha-home">Home</span></span></div>
+    <div class="fx"><span class="md">4</span><span class="date">30 Sep</span><span class="match">Athletic Navorda<span class="v">v</span><span class="dynamo">Dynamo Bresno</span></span><span class="tags"><span class="ha ha-away">Away</span></span></div>
+    <p class="fx-month">October 2026</p>
+    <div class="fx-event cup"><span class="ev-date">6 Oct</span><span>Valrekia Cup &middot; Round of 32</span></div>
+    <div class="fx"><span class="md">5</span><span class="date">13 Oct</span><span class="match"><span class="dynamo">Dynamo Bresno</span><span class="v">v</span>Dalnica Mariners</span><span class="tags"><span class="ha ha-home">Home</span></span></div>
+    <div class="fx"><span class="md">6</span><span class="date">26 Oct</span><span class="match">Red Star Olbrac<span class="v">v</span><span class="dynamo">Dynamo Bresno</span></span><span class="tags"><span class="ha ha-away">Away</span></span></div>
+    <p class="fx-month">November 2026</p>
+    <div class="fx"><span class="md">7</span><span class="date">8 Nov</span><span class="match"><span class="dynamo">Dynamo Bresno</span><span class="v">v</span>FC Korvane</span><span class="tags"><span class="ha ha-home">Home</span></span></div>
+    <div class="fx"><span class="md">8</span><span class="date">21 Nov</span><span class="match">Lokomotiv Zreska<span class="v">v</span><span class="dynamo">Dynamo Bresno</span></span><span class="tags"><span class="ha ha-away">Away</span></span></div>
+    <div class="fx-event cup"><span class="ev-date">27 Nov</span><span>Valrekia Cup &middot; Round of 16</span></div>
+    <p class="fx-month">December 2026</p>
+    <div class="fx"><span class="md">9</span><span class="date">4 Dec</span><span class="match"><span class="dynamo">Dynamo Bresno</span><span class="v">v</span>Union Dalnica</span><span class="tags"><span class="ha ha-home">Home</span></span></div>
+    <div class="fx"><span class="md">10</span><span class="date">17 Dec</span><span class="match">Iron Bresno<span class="v">v</span><span class="dynamo">Dynamo Bresno</span></span><span class="tags"><span class="derby">Derby</span><span class="ha ha-away">Away</span></span></div>
+    <div class="fx"><span class="md">11</span><span class="date">30 Dec</span><span class="match"><span class="dynamo">Dynamo Bresno</span><span class="v">v</span>Velkovic Eagles</span><span class="tags"><span class="ha ha-home">Home</span></span></div>
+    <p class="fx-month">January 2027</p>
+    <div class="fx"><span class="md">12</span><span class="date">13 Jan</span><span class="match">SC Gradelheim<span class="v">v</span><span class="dynamo">Dynamo Bresno</span></span><span class="tags"><span class="ha ha-away">Away</span></span></div>
+    <div class="fx"><span class="md">13</span><span class="date">26 Jan</span><span class="match"><span class="dynamo">Dynamo Bresno</span><span class="v">v</span>Port Vasska FC</span><span class="tags"><span class="ha ha-home">Home</span></span></div>
+    <p class="fx-month">February 2027</p>
+    <div class="fx-event cup"><span class="ev-date">1 Feb</span><span>Valrekia Cup &middot; Quarter-Finals</span></div>
+    <div class="fx"><span class="md">14</span><span class="date">8 Feb</span><span class="match">FK Dravona<span class="v">v</span><span class="dynamo">Dynamo Bresno</span></span><span class="tags"><span class="ha ha-away">Away</span></span></div>
+    <div class="fx"><span class="md">15</span><span class="date">21 Feb</span><span class="match"><span class="dynamo">Dynamo Bresno</span><span class="v">v</span>Athletic Navorda</span><span class="tags"><span class="ha ha-home">Home</span></span></div>
+    <p class="fx-month">March 2027</p>
+    <div class="fx"><span class="md">16</span><span class="date">6 Mar</span><span class="match">Dalnica Mariners<span class="v">v</span><span class="dynamo">Dynamo Bresno</span></span><span class="tags"><span class="ha ha-away">Away</span></span></div>
+    <div class="fx"><span class="md">17</span><span class="date">19 Mar</span><span class="match"><span class="dynamo">Dynamo Bresno</span><span class="v">v</span>Red Star Olbrac</span><span class="tags"><span class="ha ha-home">Home</span></span></div>
+    <div class="fx-event cup"><span class="ev-date">25 Mar</span><span>Valrekia Cup &middot; Semi-Finals</span></div>
+    <p class="fx-month">April 2027</p>
+    <div class="fx"><span class="md">18</span><span class="date">1 Apr</span><span class="match">FC Korvane<span class="v">v</span><span class="dynamo">Dynamo Bresno</span></span><span class="tags"><span class="ha ha-away">Away</span></span></div>
+    <div class="fx"><span class="md">19</span><span class="date">14 Apr</span><span class="match"><span class="dynamo">Dynamo Bresno</span><span class="v">v</span>Lokomotiv Zreska</span><span class="tags"><span class="ha ha-home">Home</span></span></div>
+    <div class="fx"><span class="md">20</span><span class="date">27 Apr</span><span class="match">Union Dalnica<span class="v">v</span><span class="dynamo">Dynamo Bresno</span></span><span class="tags"><span class="ha ha-away">Away</span></span></div>
+    <p class="fx-month">May 2027</p>
+    <div class="fx"><span class="md">21</span><span class="date">10 May</span><span class="match"><span class="dynamo">Dynamo Bresno</span><span class="v">v</span>Iron Bresno</span><span class="tags"><span class="derby">Derby</span><span class="ha ha-home">Home</span></span></div>
+    <div class="fx"><span class="md">22</span><span class="date">24 May</span><span class="match">Velkovic Eagles<span class="v">v</span><span class="dynamo">Dynamo Bresno</span></span><span class="tags"><span class="ha ha-away">Away</span></span></div>
+    <div class="fx-event cup"><span class="ev-date">31 May</span><span>Valrekia Cup &middot; Final</span></div>
+
+  </div>
+</div></section>
+
+<footer class="foot"><div class="wrap">
+  <div class="foot-top">
+    <div class="foot-brand"><img src="crest.svg" alt="Dynamo Bresno crest"><p>Founded 1911 &middot; West Bresno, Republic of Valrekia &middot; Dalnic Premier League. Home of the C&oelig;ur de Feu.</p></div>
+    <div class="foot-col"><h4>The Club</h4><a href="news.html">News</a><a href="squad.html">First Team</a><a href="club.html">History</a></div>
+    <div class="foot-col"><h4>Explore</h4><a href="games.html">Games</a><a href="news.html">Dispatch</a><a href="shop">Shop</a></div>
+    <div class="foot-col foot-news" id="join"><img class="dispatch-logo" src="images/dispatch-logo.gif" alt="The Dynamo Dispatch" onerror="this.style.display='none'"><h4>The Dynamo Dispatch</h4><p>Sign up and get the news first.</p><form onsubmit="return subscribeDispatch(event,'f')"><input type="email" id="f-email" placeholder="your@email.com" required><button class="btn btn-gold" type="submit">Subscribe</button></form><div class="ok" id="f-ok"></div></div>
+  </div>
+  <div class="partners"><span class="plabel">Principal Partner</span><div class="pname">Montiselle</div><span class="plabel">Kit Manufacturer</span><div class="pname">Atelier Athletiq<small>A Montiselle House</small></div></div>
+  <div class="foot-legal"><div class="links"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="cookies.html">Cookies</a><a href="mailto:dynamo@solqu.com?subject=Press%20Enquiry">Press Office</a></div><div class="copy">&copy; Dynamo Bresno 2026 &middot; Precision. Progress. Prestige.</div></div>
+  <p class="fiction">Dynamo Bresno is a work of fiction. The club, the Dalnic Premier League, the Republic of Valrekia, Montiselle, and all names, characters, teams, places, logos and events depicted on this website are fictional creations or are used fictitiously. Any resemblance to actual persons, living or dead, or to real clubs, businesses, organisations, places or events, is entirely coincidental. Nothing on this website should be taken as a statement of fact about any real person or organisation.</p>
+</div></footer>
+
+<script src="app.js"></script>
+</body>
+</html>
