@@ -21,17 +21,26 @@ document.addEventListener('DOMContentLoaded', function(){
   var navbtn = document.getElementById('navbtn');
   var hdr = document.getElementById('hdr');
   if(navbtn && hdr){
+    var closeNav = function(){
+      hdr.classList.remove('nav-open');
+      document.body.classList.remove('nav-locked');
+    };
     navbtn.addEventListener('click', function(e){
       e.stopPropagation();
-      hdr.classList.toggle('nav-open');
+      var open = hdr.classList.toggle('nav-open');
+      document.body.classList.toggle('nav-locked', open);
     });
     document.addEventListener('click', function(e){
       if(hdr.classList.contains('nav-open') && !hdr.contains(e.target)){
-        hdr.classList.remove('nav-open');
+        closeNav();
       }
     });
     document.addEventListener('keydown', function(e){
-      if(e.key === 'Escape') hdr.classList.remove('nav-open');
+      if(e.key === 'Escape') closeNav();
+    });
+    // Leaving mobile widths: clear the open menu and page-scroll lock
+    window.addEventListener('resize', function(){
+      if(window.innerWidth > 1100 && hdr.classList.contains('nav-open')) closeNav();
     });
   }
 
