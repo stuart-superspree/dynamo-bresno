@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function(){
     });
     // Leaving mobile widths: clear the open menu and page-scroll lock
     window.addEventListener('resize', function(){
-      if(window.innerWidth > 1100 && hdr.classList.contains('nav-open')) closeNav();
+      if(window.innerWidth > 1240 && hdr.classList.contains('nav-open')) closeNav();
     });
   }
 
